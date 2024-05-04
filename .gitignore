@@ -1,0 +1,7 @@
+test.py
+test_manage.py
+*.txt
+kadai_002_1/
+startup_bbs/
+upload/
+myvenv/
