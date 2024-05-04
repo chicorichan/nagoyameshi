@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Nagoyameshi</title>
+   </head>
+<body>
+   <h1>Nagoyameshi</h1>
+   <main class="container">
+
+      <form action="" method="GET">
+          <input type="text" name="search" value="{{ request.GET.search }}" placeholder="キーワード"> 
+          <input type="submit" value="検索">
+      </form>
+      
+      {# views.pyで取り出したデータを表示 #}
+      {% for restaurant in restaurants %}
+      {# name を表示させる場合 #}
+      <div>{{ restaurant.name }}</div>
+      {# budget を表示させる場合#}
+      <div>{{ restaurant.budget }}</div>
+      {# img を表示 #}
+      <div>{{ rewtaurant.img }}</div>
+      {% endfor %}
+
+  </main>
+</body>
+</html>
