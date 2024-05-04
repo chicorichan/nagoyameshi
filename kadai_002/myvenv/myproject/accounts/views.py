@@ -5,6 +5,6 @@ class IndexView(View):
 
     def get(self, request, *args, **kwargs):
 
-        return render(request,"bbs/index.html")
+        return render(request,"nagoyameshi/index.html")
 
 index   = IndexView.as_view()

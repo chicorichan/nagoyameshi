@@ -15,6 +15,16 @@
           <input type="submit" value="検索">
       </form>
 
+      {# views.pyで取り出したデータを表示 #}
+      {% for restaurant in restaurants %}
+      {# name を表示させる場合 #}
+      <div>{{ restaurant.name }}</div>
+      {# budget を表示させる場合#}
+      <div>{{ restaurant.budget }}</div>
+      {# img を表示 #}
+      <div>{{ rewtaurant.img }}</div>
+      {% endfor %}
+
   </main>
 </body>
 </html>
