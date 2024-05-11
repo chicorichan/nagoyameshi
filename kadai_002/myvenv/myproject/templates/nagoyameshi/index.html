@@ -10,10 +10,20 @@
    <h1>Nagoyameshi</h1>
    <main class="container">
 
-      <form action="" method="GET">
-          <input type="text" name="search" value="{{ request.GET.search }}" placeholder="キーワード"> 
-          <input type="submit" value="検索">
-      </form>
+    <form action="" method="GET">
+    {# categoryのプルダウンを作成 #}
+    <select name="category">
+    <option value="">カテゴリ</option>
+
+    {# categoriesをレンダリング #}
+    {% for category in categories %}
+     <option value="{{ category.id }}" {% if request.GET.category == category.str_id %}selected{% endif %}>{{ category.name }}</option>
+    {% endfor %}
+    </select>
+
+    <input type="text" name="search" value="{{ request.GET.search }}" placeholder="キーワード"> 
+    <input type="submit" value="検索">
+    </form>
 
       {# views.pyで取り出したデータを表示 #}
       {% for restaurant in restaurants %}
@@ -22,7 +32,7 @@
       {# budget を表示させる場合#}
       <div>{{ restaurant.budget }}</div>
       {# img を表示 #}
-      <div>{{ rewtaurant.img }}</div>
+      <div>{{ restaurant.img }}</div>
       {% endfor %}
 
   </main>

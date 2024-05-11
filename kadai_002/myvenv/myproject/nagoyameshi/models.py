@@ -14,6 +14,10 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+    # 文字列型のidを返すメソッド プルダウンで選択した値を固定させるのに必要
+    def str_id(self):
+        return str(self.id)
+
 #飲食店モデル
 class Restaurant(models.Model):
     name = models.CharField(verbose_name="店舗名",max_length=100)

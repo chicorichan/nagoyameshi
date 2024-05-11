@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views import View
-from .models import Restaurant
+from .models import Restaurant,Category
+from .forms import RestaurantCategorySearchForm
 
 from django.db.models import Q
 
@@ -11,9 +12,13 @@ class IndexView(View):
         context={}
         #context["restaurants"]  = Restaurant.objects.all()
 
+        #categoryの全データをcontextに含める
+        context["categories"]   = Category.objects.all()
+        #バリデーションをするにはnagoyameshiにforms.pyが必要
+
          # クエリを初期化
         query = Q()
-
+        """"
         if "search" in request.GET:
             words =request.GET["search"].replace("　"," ").split(" ")
             for word in words:
@@ -25,7 +30,19 @@ class IndexView(View):
         else:
             print("?search=はありません。検索はしていません。")
             context["restaurants"]  = Restaurant.objects.all()
+        """
+        form = RestaurantCategorySearchForm(request.GET)
 
+        if form.is_valid():
+            #指定されたcategoryを取り出す。
+            cleaned = form.clean()
+
+            #category未指定字は条件は追加しない
+            if cleaned["category"]:
+                query &=Q(category=cleaned["category"])
+
+        #検索されているときも、されていないときも.filter(query)でＯＫ
+        context["restaurants"]=Restaurant.objects.filter(query)
 
         return render(request,"nagoyameshi/index.html",context)
 
