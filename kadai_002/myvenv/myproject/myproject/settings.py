@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     "nagoyameshi",
     "accounts.apps.AccountsConfig",
+    "upload",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -142,7 +143,14 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+#↓追加
+STATICFILES_DIRS = [ BASE_DIR / "static" ]
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# 画像関連の設定
+MEDIA_URL = '/nagoyameshi/restaurant/img/'
+MEDIA_ROOT = BASE_DIR / ''

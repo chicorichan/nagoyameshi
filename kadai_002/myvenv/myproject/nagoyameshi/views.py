@@ -3,6 +3,8 @@ from django.views import View
 from .models import Restaurant,Category
 from .forms import RestaurantCategorySearchForm
 
+# ページネーション
+from django.core.paginator import Paginator 
 from django.db.models import Q
 
 class IndexView(View):
@@ -18,7 +20,7 @@ class IndexView(View):
 
          # クエリを初期化
         query = Q()
-        """"
+
         if "search" in request.GET:
             words =request.GET["search"].replace("　"," ").split(" ")
             for word in words:
@@ -26,11 +28,16 @@ class IndexView(View):
                     continue 
                 else:
                     query &=Q(name__contains=word)
+
+
+        """"                    
             context["restaurants"] = Restaurant.objects.filter(query)
         else:
             print("?search=はありません。検索はしていません。")
             context["restaurants"]  = Restaurant.objects.all()
         """
+
+
         form = RestaurantCategorySearchForm(request.GET)
 
         if form.is_valid():
@@ -42,9 +49,88 @@ class IndexView(View):
                 query &=Q(category=cleaned["category"])
 
         #検索されているときも、されていないときも.filter(query)でＯＫ
-        context["restaurants"]=Restaurant.objects.filter(query)
+        #context["restaurants"] = Restaurant.objects.filter(query)
+        restaurants     = Restaurant.objects.filter(query)
+
+
+        # =====ページネーション処理======================
+
+        # 複数のデータを、3個おきにページ区切りにする。
+        paginator       = Paginator(restaurants,3)
+
+        # 1ページ分の3件のデータがコンテキストに入る。ページの上限を超えた場合、最後のページが出力される。
+        # ページの指定があれば、そのページのデータを表示
+        if "page" in request.GET:
+            restaurants = paginator.get_page(request.GET["page"])
+        # もしページの指定がなければ、1ページめを表示。
+        else:
+            restaurants = paginator.get_page(1)
+
+
+        # ページと検索のパラメータを両立させたリンクを作っている
+        # request.GET.urlencode() には category=1&search= が入っている。 request.GETは実質辞書型なので {"category":1,"search":""}
+        # ↑ に、 page=2を追加したい。
+        # request.GET["page"] = 2 で、 {"category":1,"search":"","page":2}としたい。
+        # request.GET.urlencode() をすると、 category=1&search=&page=2 になる。
+
+        # ただし、 request.GET["page"] = 2 とすることはできない。
+        # request は書き換えできないオブジェクト。だから、まずは、.copy() でコピーのオブジェクトを作る。
+
+        # requestオブジェクトのコピーを作る。
+        copied  = request.GET.copy()
+
+        # 飲食店データに前のページはあるか？あれば、リンクを作る。
+        if restaurants.has_previous():
+            # 1つ前のページ番号をセットする。 copied は {"category":1,"search":"","page":2}
+            copied["page"]                      = restaurants.previous_page_number()
+            #                                            ↓ category=1&search=&page=2
+            restaurants.previous_page_link      = "?" + copied.urlencode()
+
+            # copied は {"category":1,"search":"","page":1}
+            copied["page"]                      = 1
+            #                                            ↓ category=1&search=&page=1                       
+            restaurants.first_page_link         = "?" + copied.urlencode()
+
+        if restaurants.has_next():
+            # copied は {"category":1,"search":"","page":4}
+            copied["page"]                      = restaurants.next_page_number()
+            #                                            ↓ category=1&search=&page=4             
+            restaurants.next_page_link          = "?" + copied.urlencode()
+
+            # copied は {"category":1,"search":"","page":10}
+            copied["page"]                      = restaurants.paginator.num_pages
+            #                                            ↓ category=1&search=&page=10                     
+            restaurants.end_page_link           = "?" + copied.urlencode()
+
+
+        context["restaurants"]  = restaurants
+
+        if "category_multi" in request.GET:
+            print( request.GET.getlist("category_multi") )
+            # 検索処理をする。
+            
+            for category in request.GET.getlist("category_multi"):
+                # バリデーション
+                query |=Q(category=category)
+        
+
+
 
         return render(request,"nagoyameshi/index.html",context)
 
 
 index   = IndexView.as_view()
+
+
+# 詳細ページを表示するビューを作る。
+class RestaurantView(View):
+    def get(self, request, pk, *args, **kwargs):
+
+        # 1件分のRestaurantを出す。pkを使って検索する。
+        print(pk)
+        context = {}
+        context["restaurant"]   = Restaurant.objects.filter(id=pk).first()
+
+        return render(request, "nagoyameshi/restaurant.html", context)
+
+restaurant  = RestaurantView.as_view()

@@ -6,11 +6,16 @@ from django.contrib import admin
 from django.contrib import admin
 from .models import Category,Restaurant,Reservation,Review,Fav,Company
 
+from django.utils.safestring import mark_safe
+
 class CategoryAdmin(admin.ModelAdmin):
     list_display	= [ "id", "name" ]
 
 class RestaurantAdmin(admin.ModelAdmin):
     list_display	= [ "id", "name", "category", "img", "description", "created_date", "update_date", "budget", "capacity", "start", "end" ]
+
+    def img(self,obj):
+        return mark_safe('<img src="{}" style="width:100px; height:auto;">'.format(obj.img.url))
 
 class ReservationAdmin(admin.ModelAdmin):
     list_display	= [ "id", "date", "user", "restaurant", "people" ]

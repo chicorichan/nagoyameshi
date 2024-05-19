@@ -1,0 +1,22 @@
+{% extends "nagoyameshi/base.html" %}
+
+{% block extra_head %}
+<script>console.log("ここにheadタグに追加するCSSやJSを書く");</script>
+{% endblock %}
+
+{% block main %}
+
+<h3>・・・店舗詳細</h3>
+<div>
+        <div>カテゴリ：{{ restaurant.category }}</div>
+        <div>{{ restaurant.name }}</div>
+        <div><img src="{{ MEDIA_URL }}{{ release.cover.url }}" alt="店舗画像"></div>
+        <div>営業時間{{ restaurant.start }}～{{ restaurant.end }}</div>
+        <div>平均予算:{{ restaurant.budget }}</div>
+        <div>店舗説明<br>{{ restaurant.description }}</div>
+        <div>受け入れ人数:{{ restaurant.capacity }}</div>
+        <div>登録日:{{ restaurant.created_date }}</div>
+        <div>更新日:{{ restaurant.update_date }}</div>
+</div>
+
+{% endblock %}

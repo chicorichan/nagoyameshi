@@ -9,3 +9,9 @@ class RestaurantCategorySearchForm(forms.ModelForm):
     class Meta:
         model   = Restaurant
         fields  = [ "category" ]
+
+class BudgetSearchForm(forms.ModelForm):
+
+    class Meta:
+        model   = Restaurant
+        fields  = [ "budget" ]

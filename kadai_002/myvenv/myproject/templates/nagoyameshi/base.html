@@ -1,0 +1,44 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Nagoyameshi</title>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'common/css/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'nagoyameshi/css/nagoyameshi_style.css' %}">
+    {% block extra_head %}
+
+    {% endblock %}
+
+</head>
+<body>
+  
+<h1>Nagoyameshi</h1>
+  <input id="sidebar_chk" class="sidebar_chk" type="checkbox">
+  <div class="sidebar_area">
+
+      <div class="sidebar_content">
+          <div>ログイン</div>
+          <div><a href="http://127.0.0.1:8000/?category_multi=1&category=&search=">店舗検索</a></div>
+          <div>閲覧履歴</div>
+          <div>予約一覧</div>
+          <div>問い合わせ</div>
+          <div>ログアウト</div>
+      </div>
+      <label class="sidebar_label" for="sidebar_chk">menu</label>
+
+  </div>
+
+  <label class="sidebar_out_area" for="sidebar_chk"></label>
+    <main class="container">
+
+        {% block main %}
+        {% endblock %}
+
+    </main>
+</body>
+</html>
