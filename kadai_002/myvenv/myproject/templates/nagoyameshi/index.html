@@ -5,6 +5,8 @@
 {% endblock %}
 
 {% block main %}
+<div class="container">
+  <div class="table-responsive">
    <h3>・・・店舗検索</h3>
     <form action="" method="GET">
       <p>■カテゴリを選択</p>
@@ -28,25 +30,36 @@
       <input type="submit" value="検索">
 
     </form>
-
+    <table class="table table-bordered">  
+     
+      <thead>
+        <tr>
+          <th>カテゴリ</th>
+          <th>店舗名</th>
+          <th>平均予算</th>
+          <th></th>
+          <th>店舗詳細</th>
+        </tr>
+      </thead>
       {# views.pyで取り出したデータを表示 #}
+      
       {% for restaurant in restaurants %}
+      {# categoryのプルダウンを作成 を表示させる場合 #}
+      <tr>
+      <th>{{ restaurant.category }}</th>
       {# name を表示させる場合 #}
-      <div>{{ restaurant.name }}</div>
+        <th>{{ restaurant.name }}</th>
       {# budget を表示させる場合#}
-      <div>{{ restaurant.budget }}</div>
+        <th>{{ restaurant.budget }}</th>
       {# img を表示 #}
-      <div><img src="{{ MEDIA_URL }}{{ release.cover.url }}" alt="店舗画像"></div>
-
-   
-      {# 店舗のURLを用意 #}
-      <div>
-        <a href="{% url 'nagoyameshi:restaurant' restaurant.id %}">店舗詳細</a>
-      </div>
-    
-      {% endfor %}
+        <th><img src="{{ MEDIA_URL }}{{ release.cover.url }}" alt="店舗画像"></th>
 
       
+      {# 店舗のURLを用意 #}
+        <th><a href="{% url 'nagoyameshi:restaurant' restaurant.id %}">店舗詳細</a></th>
+      </tr>    
+      {% endfor %}
+    </table>
     {# ページの表示 #}
     {{ restaurants.number }} / {{ restaurants.paginator.num_pages }} ページ<br>
 
@@ -61,5 +74,5 @@
     <a href="{{ restaurants.next_page_link }}">次へ</a>
     <a href="{{ restaurants.end_page_link }}">最後 &raquo;</a>
     {% endif %}
-
+    
 {% endblock %}

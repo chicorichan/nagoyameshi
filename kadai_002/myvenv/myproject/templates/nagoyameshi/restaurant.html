@@ -5,18 +5,34 @@
 {% endblock %}
 
 {% block main %}
-
+<div class="container">
+<div class="table-responsive">
 <h3>・・・店舗詳細</h3>
-<div>
-        <div>カテゴリ：{{ restaurant.category }}</div>
-        <div>{{ restaurant.name }}</div>
-        <div><img src="{{ MEDIA_URL }}{{ release.cover.url }}" alt="店舗画像"></div>
-        <div>営業時間{{ restaurant.start }}～{{ restaurant.end }}</div>
-        <div>平均予算:{{ restaurant.budget }}</div>
-        <div>店舗説明<br>{{ restaurant.description }}</div>
-        <div>受け入れ人数:{{ restaurant.capacity }}</div>
-        <div>登録日:{{ restaurant.created_date }}</div>
-        <div>更新日:{{ restaurant.update_date }}</div>
-</div>
+<table>          
+        <tr><th>カテゴリ：{{ restaurant.category }}</th></tr>
+        <tr><th>店舗名　：{{ restaurant.name }}</th></tr>
+        <!-- <div><img src="{{ MEDIA_URL }}{{ release.cover.url }}" alt="店舗画像"></div> -->
+        <!-- <tr>受け入れ人数:{{ restaurant.capacity }}</tr> -->
+</table>
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        <div class="col">
+          <div class="card shadow-sm">
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: صورة مصغرة" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">準備中</text></svg>
+            <div class="card-body">
+              <p class="card-text">営業時間:{{ restaurant.start }}～{{ restaurant.end }}</p>
+              <p class="card-text">平均予算:{{ restaurant.budget }}</p>
+              <p class="card-text">{{ restaurant.description }}</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-sm btn-outline-secondary">予約</button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary">問合せ</button>
+                </div>
+                <small class="text-body-secondary">更新日:{{ restaurant.update_date }}</small>
+              </div>
+            </div>
+          </div>
+        </div>
 
+</div>
+</div>
 {% endblock %}

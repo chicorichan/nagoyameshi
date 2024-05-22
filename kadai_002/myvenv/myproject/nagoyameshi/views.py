@@ -105,6 +105,16 @@ class IndexView(View):
 
         context["restaurants"]  = restaurants
 
+        """
+        # name="comment" を取得する場合
+        if "comment" in request.GET:
+            print( request.GET["comment"] ) 
+            # ↑このやり方だと、同じname属性が複数ある場合、最後の一つしか取れない。
+
+            # 複数ある場合、全部をリスト型にして取得するには？
+            print( request.GET.getlist("comment") )
+
+
         if "category_multi" in request.GET:
             print( request.GET.getlist("category_multi") )
             # 検索処理をする。
@@ -112,7 +122,7 @@ class IndexView(View):
             for category in request.GET.getlist("category_multi"):
                 # バリデーション
                 query |=Q(category=category)
-        
+        """
 
 
 
