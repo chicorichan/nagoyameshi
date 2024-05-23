@@ -49,7 +49,7 @@ body{
   width:100%;
   height:100vh;
 
-  z-index:-1;
+  /* z-index:-1;  ←これがあるとクリックして閉じさせたい領域が商品一覧の一つ奥側になってしまうので  */ 
   opacity:0.8;
 }
 .sidebar_chk[type="checkbox"]:checked ~ .sidebar_out_area {

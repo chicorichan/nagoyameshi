@@ -7,7 +7,8 @@ from django.conf.urls.static import static
 app_name    = "nagoyameshi"
 urlpatterns = [
     path('', views.index, name="index"),
-    path('restaurant/<int:pk>/', views.restaurant, name="restaurant")
+    path('restaurant/<int:pk>/', views.restaurant, name="restaurant"),
+    path('review/<int:pk>/', views.review, name="review")
 ]
 
 #画像のURL設定

@@ -9,12 +9,15 @@
   <div class="table-responsive">
    <h3>・・・店舗検索</h3>
     <form action="" method="GET">
+
+      {% comment %}
       <p>■カテゴリを選択</p>
       {% for category in categories %}
       <label>
         <input type="checkbox" name="category_multi" value="{{category.id}}" {% if request.GET.category == category.str_id %}checked{% endif %}>{{ category.name }}
       </label>
       {% endfor %}
+      {% endcomment %}
 
       {# categoryのプルダウンを作成 #}
       <select name="category">
@@ -52,9 +55,9 @@
       {# budget を表示させる場合#}
         <th>{{ restaurant.budget }}</th>
       {# img を表示 #}
-        <th><img src="{{ MEDIA_URL }}{{ release.cover.url }}" alt="店舗画像"></th>
+      {# 画像の保存先の場所 ↓     配信先のURLも含めてURLを生成する必要がある。  #}
+            <th><img src="{{ restaurant.img.url }}" alt="" style="width: 20%; height: 20%;"></th>
 
-      
       {# 店舗のURLを用意 #}
         <th><a href="{% url 'nagoyameshi:restaurant' restaurant.id %}">店舗詳細</a></th>
       </tr>    

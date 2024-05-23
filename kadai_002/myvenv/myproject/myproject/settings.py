@@ -33,7 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     "nagoyameshi",
     "accounts.apps.AccountsConfig",
-    "upload",
+    #"upload",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -152,5 +152,7 @@ STATICFILES_DIRS = [ BASE_DIR / "static" ]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # 画像関連の設定
-MEDIA_URL = '/nagoyameshi/restaurant/img/'
-MEDIA_ROOT = BASE_DIR / ''
+# MEDIA_URLは配信先のURL
+MEDIA_URL = '/media/'   #←極端に言うと何でもよい
+# MEDIA_ROOTは保存先の場所
+MEDIA_ROOT = BASE_DIR / 'media'

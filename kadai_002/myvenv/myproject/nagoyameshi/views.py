@@ -1,7 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
-from .models import Restaurant,Category
-from .forms import RestaurantCategorySearchForm
+from .models import Restaurant,Category,Review
+from .forms import RestaurantCategorySearchForm,ReviewForm
 
 # ページネーション
 from django.core.paginator import Paginator 
@@ -29,15 +29,12 @@ class IndexView(View):
                 else:
                     query &=Q(name__contains=word)
 
-
         """"                    
             context["restaurants"] = Restaurant.objects.filter(query)
         else:
             print("?search=はありません。検索はしていません。")
             context["restaurants"]  = Restaurant.objects.all()
         """
-
-
         form = RestaurantCategorySearchForm(request.GET)
 
         if form.is_valid():
@@ -51,7 +48,6 @@ class IndexView(View):
         #検索されているときも、されていないときも.filter(query)でＯＫ
         #context["restaurants"] = Restaurant.objects.filter(query)
         restaurants     = Restaurant.objects.filter(query)
-
 
         # =====ページネーション処理======================
 
@@ -102,7 +98,6 @@ class IndexView(View):
             #                                            ↓ category=1&search=&page=10                     
             restaurants.end_page_link           = "?" + copied.urlencode()
 
-
         context["restaurants"]  = restaurants
 
         """
@@ -113,7 +108,7 @@ class IndexView(View):
 
             # 複数ある場合、全部をリスト型にして取得するには？
             print( request.GET.getlist("comment") )
-
+        
 
         if "category_multi" in request.GET:
             print( request.GET.getlist("category_multi") )
@@ -122,15 +117,20 @@ class IndexView(View):
             for category in request.GET.getlist("category_multi"):
                 # バリデーション
                 query |=Q(category=category)
+        
+        form = RestaurantCategorySearchForm(request.GET)
+
+        if form.is_valid():
+            #指定されたcategoryを取り出す。
+            cleaned = form.clean()
+
+            #category未指定字は条件は追加しない
+            if cleaned["category"]:
+                query &=Q(category=cleaned["category"])
         """
-
-
-
         return render(request,"nagoyameshi/index.html",context)
 
-
 index   = IndexView.as_view()
-
 
 # 詳細ページを表示するビューを作る。
 class RestaurantView(View):
@@ -140,7 +140,30 @@ class RestaurantView(View):
         print(pk)
         context = {}
         context["restaurant"]   = Restaurant.objects.filter(id=pk).first()
+        # 飲食店に紐づくレビューを表示させる。Reviewモデルを使う
+        # 例: Restaurantのidが1のデータを取り出したい場合、filter()はどうなる？
+        # Review.objects.filter(restaurant=1)
+
+        # なのでRestaurantのid(モデルのフィールド)がpk(URLのパスコンバータ)のデータを取り出したい場合
+        #Review.objects.filter(restaurant=pk)になる
+        context["reviews"]      = Review.objects.filter(restaurant=pk)
 
         return render(request, "nagoyameshi/restaurant.html", context)
 
 restaurant  = RestaurantView.as_view()
+
+#飲食店のレビューを受け付けるレビュー
+class ReviewView(View):
+    def post(salf, request, pk, *args, **kwargs):
+
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            form.save()
+        else:
+            print("保存失敗")
+            print(form.errors)
+
+       #投稿した後は、飲食店詳細ページにリダイレクトする。
+        return redirect("nagoyameshi:restaurant", pk)
+
+review = ReviewView.as_view()
