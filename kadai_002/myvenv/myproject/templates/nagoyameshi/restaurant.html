@@ -8,34 +8,35 @@
 <div class="container">
 <div class="table-responsive">
 <h3>・・・店舗詳細</h3>
-<table>          
-        <tr><th>カテゴリ：{{ restaurant.category }}</th></tr>
-        <tr><th>店舗名　：{{ restaurant.name }}</th></tr>
-        <!-- <div><img src="{{ MEDIA_URL }}{{ release.cover.url }}" alt="店舗画像"></div> -->
-        <!-- <tr>受け入れ人数:{{ restaurant.capacity }}</tr> -->
+<table class="table table-bordered">  
+     
+  <thead>
+    <tr>
+      <th>カテゴリ</th>
+      <th>店舗名</th>
+      <th>平均予算</th>
+      <th>店舗詳細</th>
+    </tr>
+  </thead>
+  {# views.pyで取り出したデータを表示 #}
+  
+  {# categoryのプルダウンを作成 を表示させる場合 #}
+  <tr>
+  <th>{{ restaurant.category }}</th>
+  {# name を表示させる場合 #}
+    <th>{{ restaurant.name }}</th>
+  {# budget を表示させる場合#}
+    <th>{{ restaurant.budget }}</th>
+  
+  {# 店舗のURLを用意 #}
+    <th><a href="{% url 'nagoyameshi:restaurant' restaurant.id %}">店舗詳細</a></th>
+  </tr>    
+  <tr>{# img を表示 #}
+    {# 画像の保存先の場所 ↓     配信先のURLも含めてURLを生成する必要がある。  #}
+    <img src="{{ restaurant.img.url }}" alt="店舗画像" >
+  </tr>
+  
 </table>
-<div class="mx-0 row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        <div class="col">
-          <div class="card shadow-sm">
-            {# <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: صورة مصغرة" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">準備中</text></svg> #}
-            <img class="bd-placeholder-img card-img-top" src="{{ restaurant.img.url }}" alt="">
-            <div class="card-body">
-              <p class="card-text">営業時間:{{ restaurant.start }}～{{ restaurant.end }}</p>
-              <p class="card-text">平均予算:{{ restaurant.budget }}</p>
-              <p class="card-text">{{ restaurant.description }}</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">予約</button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary">問合せ</button>
-                </div>
-                <small class="text-body-secondary">更新日:{{ restaurant.update_date }}</small>
-              </div>
-            </div>
-          </div>
-        </div>
-
-</div>
-</div>
 
 <h2>レビュー投稿</h2>
 

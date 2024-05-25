@@ -8,3 +8,25 @@ h3{
 p {
   color: rgba(4, 9, 82, 0.952);
 }
+
+.restaurant-card p {
+  font-size: 14px;
+  margin: 5px 0;
+}
+
+.c-box {
+  display: flex;
+  flex-direction:row;
+  margin: 0;
+  padding: 5px;
+}
+
+.c-item {
+  padding: 5px;
+  margin: 5px;
+  background-color:rgba(26, 33, 129, 0.5)
+}
+
+.item-img {
+  margin: 0 auto;
+}

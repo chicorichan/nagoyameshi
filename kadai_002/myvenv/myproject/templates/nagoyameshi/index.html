@@ -5,19 +5,10 @@
 {% endblock %}
 
 {% block main %}
-<div class="container">
   <div class="table-responsive">
    <h3>・・・店舗検索</h3>
+   <br>
     <form action="" method="GET">
-
-      {% comment %}
-      <p>■カテゴリを選択</p>
-      {% for category in categories %}
-      <label>
-        <input type="checkbox" name="category_multi" value="{{category.id}}" {% if request.GET.category == category.str_id %}checked{% endif %}>{{ category.name }}
-      </label>
-      {% endfor %}
-      {% endcomment %}
 
       {# categoryのプルダウンを作成 #}
       <select name="category">
@@ -30,52 +21,51 @@
       </select>
 
       <input type="text" name="search" value="{{ request.GET.search }}" placeholder="キーワード"> 
-      <input type="submit" value="検索">
+      <input type="submit" value="検索" class="btn btn-warning">
+      <input type="button" value="リセット" class="btn btn-dark">
 
     </form>
-    <table class="table table-bordered">  
-     
-      <thead>
-        <tr>
-          <th>カテゴリ</th>
-          <th>店舗名</th>
-          <th>平均予算</th>
-          <th></th>
-          <th>店舗詳細</th>
-        </tr>
-      </thead>
-      {# views.pyで取り出したデータを表示 #}
-      
-      {% for restaurant in restaurants %}
-      {# categoryのプルダウンを作成 を表示させる場合 #}
-      <tr>
-      <th>{{ restaurant.category }}</th>
-      {# name を表示させる場合 #}
-        <th>{{ restaurant.name }}</th>
-      {# budget を表示させる場合#}
-        <th>{{ restaurant.budget }}</th>
-      {# img を表示 #}
-      {# 画像の保存先の場所 ↓     配信先のURLも含めてURLを生成する必要がある。  #}
-            <th><img src="{{ restaurant.img.url }}" alt="" style="width: 20%; height: 20%;"></th>
 
-      {# 店舗のURLを用意 #}
-        <th><a href="{% url 'nagoyameshi:restaurant' restaurant.id %}">店舗詳細</a></th>
-      </tr>    
-      {% endfor %}
-    </table>
+    <br>
+
+    <div class="d-flex justify-content-center">
+    {# views.pyで取り出したデータを表示 #}
+    {% for restaurant in restaurants %}
+    <div class="p-3">
+      <tr>
+        <p class="card-header" style="width: 300px;">【{{ restaurant.category }}】{{ restaurant.name }}</p>
+      </tr>
+      <tr class="card-img">
+        <img src="{{ restaurant.img.url }}" style="width: 180px;height: auto;">
+      </tr>
+      <tr class="card-body">
+        <p class="card-text">営業時間：{{ restaurant.start }}～{{ restaurant.end }}</p>
+        <p class="card-text">平均予算：¥{{ restaurant.budget }}</p>
+        <p class="card-link"><a class="btn btn-primary" href="{% url 'nagoyameshi:restaurant' restaurant.id %}">店舗詳細</a></p>
+      </tr>
+    </div>
+    {% endfor %}
+  </div>
+
     {# ページの表示 #}
     {{ restaurants.number }} / {{ restaurants.paginator.num_pages }} ページ<br>
 
     {# 前へ #}
     {% if restaurants.has_previous %}
-    <a href="{{ restaurants.first_page_link }}">&laquo; 先頭</a>
-    <a href="{{ restaurants.previous_page_link }}">前へ</a>
+    <th><a href="{{ restaurants.first_page_link }}">&laquo; 先頭</a></th>
+    <th><a href="{{ restaurants.previous_page_link }}">&lt; 前へ</a></th>
+    {% else %}
+    <th>&laquo; 先頭</th>
+    <th><a href="{{ restaurants.previous_page_link }}">&lt; 前へ</a></th>
     {% endif %}
-
+    <th>・</th>
     {# 次へ #}
     {% if restaurants.has_next %}
-    <a href="{{ restaurants.next_page_link }}">次へ</a>
-    <a href="{{ restaurants.end_page_link }}">最後 &raquo;</a>
+    <th><a href="{{ restaurants.next_page_link }}">次へ &gt; </a></th>
+    <th><a href="{{ restaurants.end_page_link }}">最後 &raquo;</a></th>
+    {% else %}
+    <th><a href="{{ restaurants.next_page_link }}">次へ &gt; </a></th>
+    <th>最後 &raquo;</th>
     {% endif %}
-    
+  </div> 
 {% endblock %}
