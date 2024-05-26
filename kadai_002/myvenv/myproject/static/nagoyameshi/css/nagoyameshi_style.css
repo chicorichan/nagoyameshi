@@ -8,25 +8,117 @@ h3{
 p {
   color: rgba(4, 9, 82, 0.952);
 }
-
-.restaurant-card p {
-  font-size: 14px;
-  margin: 5px 0;
+/* リセットボタンのアンダーライン非表示 */
+.reset {
+  text-decoration: none;
 }
 
-.c-box {
-  display: flex;
-  flex-direction:row;
-  margin: 0;
-  padding: 5px;
+/* レビュー装飾 */
+input[type="radio"]{
+  display:none;
+}
+.star_radio_label_area {
+  display:inline-block;
+}
+.star_radio_label_flex {
+  font-size:2.5rem;
+  display:flex;
+  flex-direction: row-reverse;
+}
+.star_radio_label{
+  cursor:pointer;
+}
+.true_star {
+  display:none;
+  color:orange;
+}
+.false_star {
+  color:gray;
 }
 
-.c-item {
-  padding: 5px;
-  margin: 5px;
-  background-color:rgba(26, 33, 129, 0.5)
-}
+.review_star { font-size:0; }
+.review_star > span { font-size:1.25rem; }
+.review_true_star { color:orange; }
+.review_false_star { color:gray; }
 
-.item-img {
-  margin: 0 auto;
-}
+
+/* ホバーをしたときの装飾 */
+label[for="star_radio_1"]:hover > .true_star{ display:inline-block; }
+label[for="star_radio_1"]:hover > .false_star{ display:none; }
+
+label[for="star_radio_2"]:hover > .true_star , 
+label[for="star_radio_2"]:hover ~ label[for="star_radio_1"] > .true_star { display:inline-block; }
+
+label[for="star_radio_2"]:hover > .false_star, 
+label[for="star_radio_2"]:hover ~ label[for="star_radio_1"] > .false_star{ display:none; }
+
+label[for="star_radio_3"]:hover > .true_star , 
+label[for="star_radio_3"]:hover ~ label[for="star_radio_2"] > .true_star ,
+label[for="star_radio_3"]:hover ~ label[for="star_radio_1"] > .true_star { display:inline-block; }
+
+label[for="star_radio_3"]:hover > .false_star, 
+label[for="star_radio_3"]:hover ~ label[for="star_radio_2"] > .false_star,
+label[for="star_radio_3"]:hover ~ label[for="star_radio_1"] > .false_star{ display:none; }
+
+label[for="star_radio_4"]:hover > .true_star , 
+label[for="star_radio_4"]:hover ~ label[for="star_radio_3"] > .true_star ,
+label[for="star_radio_4"]:hover ~ label[for="star_radio_2"] > .true_star ,
+label[for="star_radio_4"]:hover ~ label[for="star_radio_1"] > .true_star { display:inline-block; }
+
+label[for="star_radio_4"]:hover > .false_star, 
+label[for="star_radio_4"]:hover ~ label[for="star_radio_3"] > .false_star,
+label[for="star_radio_4"]:hover ~ label[for="star_radio_2"] > .false_star,
+label[for="star_radio_4"]:hover ~ label[for="star_radio_1"] > .false_star{ display:none; }
+
+label[for="star_radio_5"]:hover > .true_star , 
+label[for="star_radio_5"]:hover ~ label[for="star_radio_4"] > .true_star ,
+label[for="star_radio_5"]:hover ~ label[for="star_radio_3"] > .true_star ,
+label[for="star_radio_5"]:hover ~ label[for="star_radio_2"] > .true_star ,
+label[for="star_radio_5"]:hover ~ label[for="star_radio_1"] > .true_star { display:inline-block; }
+
+label[for="star_radio_5"]:hover > .false_star, 
+label[for="star_radio_5"]:hover ~ label[for="star_radio_4"] > .false_star,
+label[for="star_radio_5"]:hover ~ label[for="star_radio_3"] > .false_star,
+label[for="star_radio_5"]:hover ~ label[for="star_radio_2"] > .false_star,
+label[for="star_radio_5"]:hover ~ label[for="star_radio_1"] > .false_star{ display:none; }
+
+
+/* チェックされたときの装飾 */
+#star_radio_1[type="radio"]:checked ~ .star_radio_label_area > .star_radio_label_flex > label[for="star_radio_1"] > .true_star{ display:inline-block; }
+#star_radio_1[type="radio"]:checked ~ .star_radio_label_area > .star_radio_label_flex > label[for="star_radio_1"] > .false_star{ display:none; }
+
+#star_radio_2[type="radio"]:checked ~ .star_radio_label_area > .star_radio_label_flex > label[for="star_radio_2"] > .true_star , 
+#star_radio_2[type="radio"]:checked ~ .star_radio_label_area > .star_radio_label_flex > label[for="star_radio_1"] > .true_star { display:inline-block; }
+
+#star_radio_2[type="radio"]:checked ~ .star_radio_label_area > .star_radio_label_flex > label[for="star_radio_2"] > .false_star, 
+#star_radio_2[type="radio"]:checked ~ .star_radio_label_area > .star_radio_label_flex > label[for="star_radio_1"] > .false_star{ display:none; }
+
+#star_radio_3[type="radio"]:checked ~ .star_radio_label_area > .star_radio_label_flex > label[for="star_radio_3"] > .true_star , 
+#star_radio_3[type="radio"]:checked ~ .star_radio_label_area > .star_radio_label_flex > label[for="star_radio_2"] > .true_star ,
+#star_radio_3[type="radio"]:checked ~ .star_radio_label_area > .star_radio_label_flex > label[for="star_radio_1"] > .true_star { display:inline-block; }
+
+#star_radio_3[type="radio"]:checked ~ .star_radio_label_area > .star_radio_label_flex > label[for="star_radio_3"] > .false_star, 
+#star_radio_3[type="radio"]:checked ~ .star_radio_label_area > .star_radio_label_flex > label[for="star_radio_2"] > .false_star,
+#star_radio_3[type="radio"]:checked ~ .star_radio_label_area > .star_radio_label_flex > label[for="star_radio_1"] > .false_star{ display:none; }
+
+#star_radio_4[type="radio"]:checked ~ .star_radio_label_area > .star_radio_label_flex > label[for="star_radio_4"] > .true_star , 
+#star_radio_4[type="radio"]:checked ~ .star_radio_label_area > .star_radio_label_flex > label[for="star_radio_3"] > .true_star ,
+#star_radio_4[type="radio"]:checked ~ .star_radio_label_area > .star_radio_label_flex > label[for="star_radio_2"] > .true_star ,
+#star_radio_4[type="radio"]:checked ~ .star_radio_label_area > .star_radio_label_flex > label[for="star_radio_1"] > .true_star { display:inline-block; }
+
+#star_radio_4[type="radio"]:checked ~ .star_radio_label_area > .star_radio_label_flex > label[for="star_radio_4"] > .false_star, 
+#star_radio_4[type="radio"]:checked ~ .star_radio_label_area > .star_radio_label_flex > label[for="star_radio_3"] > .false_star,
+#star_radio_4[type="radio"]:checked ~ .star_radio_label_area > .star_radio_label_flex > label[for="star_radio_2"] > .false_star,
+#star_radio_4[type="radio"]:checked ~ .star_radio_label_area > .star_radio_label_flex > label[for="star_radio_1"] > .false_star{ display:none; }
+
+#star_radio_5[type="radio"]:checked ~ .star_radio_label_area > .star_radio_label_flex > label[for="star_radio_5"] > .true_star , 
+#star_radio_5[type="radio"]:checked ~ .star_radio_label_area > .star_radio_label_flex > label[for="star_radio_4"] > .true_star ,
+#star_radio_5[type="radio"]:checked ~ .star_radio_label_area > .star_radio_label_flex > label[for="star_radio_3"] > .true_star ,
+#star_radio_5[type="radio"]:checked ~ .star_radio_label_area > .star_radio_label_flex > label[for="star_radio_2"] > .true_star ,
+#star_radio_5[type="radio"]:checked ~ .star_radio_label_area > .star_radio_label_flex > label[for="star_radio_1"] > .true_star { display:inline-block; }
+
+#star_radio_5[type="radio"]:checked ~ .star_radio_label_area > .star_radio_label_flex > label[for="star_radio_5"] > .false_star, 
+#star_radio_5[type="radio"]:checked ~ .star_radio_label_area > .star_radio_label_flex > label[for="star_radio_4"] > .false_star,
+#star_radio_5[type="radio"]:checked ~ .star_radio_label_area > .star_radio_label_flex > label[for="star_radio_3"] > .false_star,
+#star_radio_5[type="radio"]:checked ~ .star_radio_label_area > .star_radio_label_flex > label[for="star_radio_2"] > .false_star,
+#star_radio_5[type="radio"]:checked ~ .star_radio_label_area > .star_radio_label_flex > label[for="star_radio_1"] > .false_star{ display:none; }

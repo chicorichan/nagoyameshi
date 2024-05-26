@@ -7,57 +7,84 @@
 {% block main %}
 <div class="container">
 <div class="table-responsive">
+<section>
 <h3>・・・店舗詳細</h3>
-<table class="table table-bordered">  
-     
-  <thead>
-    <tr>
-      <th>カテゴリ</th>
-      <th>店舗名</th>
-      <th>平均予算</th>
-      <th>店舗詳細</th>
+<h4>【{{ restaurant.category }}】{{ restaurant.name }}</h4>  
+<table style="width: 100%;">
+  <tr>  
+  <h5>店舗概要</h5>
+      <td>
+        <ul>
+          <p><i class="fas fa-clock">&nbsp;&nbsp;営業時間:{{ restaurant.start }}～{{ restaurant.end }}</i></p>
+            <br>
+          <p><i class="fas fa-coin">&nbsp;&nbsp;平均予算:¥{{ restaurant.budget }}</i></p>
+            <br>
+          <p><i class="fas fa-user">&nbsp;&nbsp;受入可能人数:{{ restaurant.capacity }}人</i></p>
+        </ul>
+      <td style="text-align: center;">{# img を表示 #}
+        {# 画像の保存先の場所 ↓     配信先のURLも含めてURLを生成する必要がある。  #}
+        <img src="{{ restaurant.img.url }}" alt="店舗画像" style="width: 70%; height: auto;">
+      </td>
     </tr>
-  </thead>
-  {# views.pyで取り出したデータを表示 #}
-  
-  {# categoryのプルダウンを作成 を表示させる場合 #}
-  <tr>
-  <th>{{ restaurant.category }}</th>
-  {# name を表示させる場合 #}
-    <th>{{ restaurant.name }}</th>
-  {# budget を表示させる場合#}
-    <th>{{ restaurant.budget }}</th>
-  
-  {# 店舗のURLを用意 #}
-    <th><a href="{% url 'nagoyameshi:restaurant' restaurant.id %}">店舗詳細</a></th>
-  </tr>    
-  <tr>{# img を表示 #}
-    {# 画像の保存先の場所 ↓     配信先のURLも含めてURLを生成する必要がある。  #}
-    <img src="{{ restaurant.img.url }}" alt="店舗画像" >
-  </tr>
-  
-</table>
+  </table>
+  </div>
+</section>
 
-<h2>レビュー投稿</h2>
+  <h5>店舗説明</h5>
+  <div>{{ restaurant.description }}</div>
+</tr>
+</table>  
+
+<br>
+<h5>レビュー投稿</h5>
 
 {# ReviewViewを送信先にする。 #}
+
+{# レビューコメント #}
 <form action="{% url 'nagoyameshi:review' restaurant.id %}" method="post">
-  {% csrf_token %}
-  <input type="text" name="comment">
-  <input type="number" name="stars">
-  <!-- reutaurant.idはpkで取得して固定値に -->
-  <input type="text" name="restaurant" value="{{ restaurant.id }}">
-  <input type="text" name="user" value="{{ request.user.id }}">
 
-  <input type="submit" value="送信">
+  {# レビューの星の数選択 #}
+  <input id="star_radio_1" type="radio" name="star" value="1">
+  <input id="star_radio_2" type="radio" name="star" value="2">
+  <input id="star_radio_3" type="radio" name="star" value="3">
+  <input id="star_radio_4" type="radio" name="star" value="4">
+  <input id="star_radio_5" type="radio" name="star" value="5">
+
+  <div class="star_radio_label_area">
+      <div class="star_radio_label_flex">
+          <label class="star_radio_label" for="star_radio_5"><div class="true_star" ><i class="fas fa-star"></i></div><div class="false_star"><i class="far fa-star"></i></div></label>
+          <label class="star_radio_label" for="star_radio_4"><div class="true_star" ><i class="fas fa-star"></i></div><div class="false_star"><i class="far fa-star"></i></div></label>
+          <label class="star_radio_label" for="star_radio_3"><div class="true_star" ><i class="fas fa-star"></i></div><div class="false_star"><i class="far fa-star"></i></div></label>
+          <label class="star_radio_label" for="star_radio_2"><div class="true_star" ><i class="fas fa-star"></i></div><div class="false_star"><i class="far fa-star"></i></div></label>
+          <label class="star_radio_label" for="star_radio_1"><div class="true_star" ><i class="fas fa-star"></i></div><div class="false_star"><i class="far fa-star"></i></div></label>
+      </div>
+  </div>
+  <div>
+    {% csrf_token %}
+    <p><input type="text" name="comment"></p>
+  </div>
+  <div>
+    <!-- reutaurant.idはpkで取得して固定値に -->
+    <!-- あとで style="display: none;"追記して非表示に -->
+    <input type="text" name="restaurant" value="{{ restaurant.id }}">
+    <input type="text" name="user" value="{{ request.user.id }}">
+
+    <input type="submit" value="送信">
+  </div>
 </form>
-
-<h2>投稿されたレビュー一覧</h2>
+<br>
+<h4>投稿されたレビュー一覧</h4>
 
 {# contextに与えられたreviewsを使ってレビューを表示 #}
 
 {% for review in reviews %}
-<div>{{ review.comment }}</div>
+<div class="border">
+    <div>{{ review.comment }}</div>
+    <div class="review_star">
+        <span class="review_true_star">{% for s in review.star_icon.true_star %}<i class="fas fa-star"></i>{% endfor %}</span>
+        <span class="review_false_star">{% for s in review.star_icon.false_star %}<i class="far fa-star"></i>{% endfor %}</span>
+    </div>
+</div>
 {% endfor %}
 
 

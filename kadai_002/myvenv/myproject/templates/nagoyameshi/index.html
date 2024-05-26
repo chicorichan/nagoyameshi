@@ -7,7 +7,6 @@
 {% block main %}
   <div class="table-responsive">
    <h3>・・・店舗検索</h3>
-   <br>
     <form action="" method="GET">
 
       {# categoryのプルダウンを作成 #}
@@ -21,17 +20,18 @@
       </select>
 
       <input type="text" name="search" value="{{ request.GET.search }}" placeholder="キーワード"> 
-      <input type="submit" value="検索" class="btn btn-warning">
-      <input type="button" value="リセット" class="btn btn-dark">
+      <input type="submit" value="検索" class="btn btn-info">
+      <button class="btn btn-light">
+        <a style="text-decoration: none; color: rgb(39, 38, 38);" href="http://127.0.0.1:8000/?category_multi=1&category=&search=">リセット</a>
+      </button>
 
     </form>
-
-    <br>
 
     <div class="d-flex justify-content-center">
     {# views.pyで取り出したデータを表示 #}
     {% for restaurant in restaurants %}
     <div class="p-3">
+    <div class="shadow p-3 mb-5 bg-white">
       <tr>
         <p class="card-header" style="width: 300px;">【{{ restaurant.category }}】{{ restaurant.name }}</p>
       </tr>
@@ -41,8 +41,9 @@
       <tr class="card-body">
         <p class="card-text">営業時間：{{ restaurant.start }}～{{ restaurant.end }}</p>
         <p class="card-text">平均予算：¥{{ restaurant.budget }}</p>
-        <p class="card-link"><a class="btn btn-primary" href="{% url 'nagoyameshi:restaurant' restaurant.id %}">店舗詳細</a></p>
+        <p class="card-link"><a class="btn btn-info" href="{% url 'nagoyameshi:restaurant' restaurant.id %}">店舗詳細</a></p>
       </tr>
+    </div>
     </div>
     {% endfor %}
   </div>
@@ -56,7 +57,7 @@
     <th><a href="{{ restaurants.previous_page_link }}">&lt; 前へ</a></th>
     {% else %}
     <th>&laquo; 先頭</th>
-    <th><a href="{{ restaurants.previous_page_link }}">&lt; 前へ</a></th>
+    <th>&lt; 前へ</a></th>
     {% endif %}
     <th>・</th>
     {# 次へ #}
@@ -64,7 +65,7 @@
     <th><a href="{{ restaurants.next_page_link }}">次へ &gt; </a></th>
     <th><a href="{{ restaurants.end_page_link }}">最後 &raquo;</a></th>
     {% else %}
-    <th><a href="{{ restaurants.next_page_link }}">次へ &gt; </a></th>
+    <th>次へ &gt; </a></th>
     <th>最後 &raquo;</th>
     {% endif %}
   </div> 

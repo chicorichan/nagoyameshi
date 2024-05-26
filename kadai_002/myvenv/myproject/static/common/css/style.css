@@ -1,7 +1,7 @@
 body{
-  margin: 50px;
   font-family: メイリオ;
 }
+/* サイドバー装飾 */
 .sidebar_chk{
   display:none;
 }
@@ -27,7 +27,6 @@ body{
   /* 英字は90度回転する*/
   writing-mode:vertical-lr;
   text-orientation: upright;
-
   padding:2rem 0.25rem;
   cursor:pointer;
   border:solid 1px rgba(60, 50, 102, 0.623);
@@ -37,7 +36,6 @@ body{
   left:0;
   transition:0.2s;
 }
-
 
 /* サイドバー展開中、範囲外をクリックすると閉じる */
 .sidebar_out_area{
@@ -55,6 +53,34 @@ body{
 .sidebar_chk[type="checkbox"]:checked ~ .sidebar_out_area {
   display:block;
 }
+
+/* サイドバーのリスト */
+ul {
+  list-style: none; /* デフォルトのリストスタイルを無効に */
+  margin-left: -20px;
+}
+
+li {
+  position: relative; /* 相対的な位置指定 */
+  transition: transform 0.3s; /* アニメーションの速度を設定 */
+}
+
+li::before {
+  content: "■"; /* カスタム記号を設定 */
+  margin-right: 20px; /* 記号とテキストの間隔を調整 */
+}
+
+li a:visited {
+  color: inherit; /* 訪問前のリンクの色を変えないようにする */
+  transition: color 0.3s; /* アニメーションの速度を設定 */
+}
+
+li a:hover {
+  text-decoration: none;
+  color:#fffd7f;
+}
+
+
 /* ここまでがサイドバー */
 /* その他装飾 */
 h1 {
