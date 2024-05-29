@@ -1,7 +1,13 @@
 {% extends "nagoyameshi/base.html" %}
 
 {% block extra_head %}
-<script>console.log("ここにheadタグに追加するCSSやJSを書く");</script>
+<script>
+console.log("ここにheadタグに追加するCSSやJSを書く");
+var myCarousel = document.querySelector('#myCarousel')
+var carousel = new bootstrap.Carousel(myCarousel, {
+  interval: 2000,  // 自動送りの間隔を2000ms（2秒）に設定
+})
+</script>
 {% endblock %}
 
 {% block main %}
@@ -36,7 +42,7 @@
         <p class="card-header" style="width: 300px;">【{{ restaurant.category }}】{{ restaurant.name }}</p>
       </tr>
       <tr class="card-img">
-        <img src="{{ restaurant.img.url }}" style="width: 180px;height: auto;">
+        <img src="{{ restaurant.img.url }}" style="width: auto;height: 150px;">
       </tr>
       <tr class="card-body">
         <p class="card-text">営業時間：{{ restaurant.start }}～{{ restaurant.end }}</p>

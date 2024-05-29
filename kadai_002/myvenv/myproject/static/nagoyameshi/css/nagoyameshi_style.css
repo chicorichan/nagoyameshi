@@ -13,6 +13,12 @@ p {
   text-decoration: none;
 }
 
+/* 店舗詳細の装飾－概要部分 */
+.outline {
+  color: rgba(4, 9, 82, 0.952);
+  font-size: larger;
+}
+
 /* レビュー装飾 */
 input[type="radio"]{
   display:none;

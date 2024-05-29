@@ -9,17 +9,25 @@
 <div class="table-responsive">
 <section>
 <h3>・・・店舗詳細</h3>
+<!-- <h4 style="font-weight: bold;">【{{ restaurant.category }}】{{ restaurant.name }}</h4>  -->
 <h4>【{{ restaurant.category }}】{{ restaurant.name }}</h4>  
 <table style="width: 100%;">
   <tr>  
-  <h5>店舗概要</h5>
-      <td>
-        <ul>
-          <p><i class="fas fa-clock">&nbsp;&nbsp;営業時間:{{ restaurant.start }}～{{ restaurant.end }}</i></p>
-            <br>
-          <p><i class="fas fa-coin">&nbsp;&nbsp;平均予算:¥{{ restaurant.budget }}</i></p>
-            <br>
-          <p><i class="fas fa-user">&nbsp;&nbsp;受入可能人数:{{ restaurant.capacity }}人</i></p>
+  <!-- <h5 style="background: linear-gradient(90deg, lemonchiffon, white);padding-top: 10px;padding-bottom: 5px;">&nbsp;&nbsp;店舗概要</h5> -->
+  <h5>&nbsp;&nbsp;店舗概要</h5>
+  <td>
+        <ul class="outline">
+          <div class="outline-list"><i class="fas fa-clock"></i>&nbsp;&nbsp;営業時間:{{ restaurant.start }}～{{ restaurant.end }}</div>
+            <div>---------------------------------------------------------</div>
+          <div class="outline-list"><i class="fas fa-coin"></i>&nbsp;&nbsp;平均予算:¥{{ restaurant.budget }}</div>
+            <div>---------------------------------------------------------</div>
+          <div class="outline-list"><i class="fas fa-user"></i>&nbsp;&nbsp;受入可能人数:{{ restaurant.capacity }}人</div>
+          <div>---------------------------------------------------------</div>
+          <div>
+          <i class="fas fa-envelope"></i>&nbsp;
+          <input type="submit" value="予約" class="btn btn-info">&nbsp;&nbsp;
+          <input type="submit" value="問合せ" class="btn btn-outline-info">
+          </div>
         </ul>
       <td style="text-align: center;">{# img を表示 #}
         {# 画像の保存先の場所 ↓     配信先のURLも含めてURLを生成する必要がある。  #}
@@ -30,13 +38,15 @@
   </div>
 </section>
 
-  <h5>店舗説明</h5>
-  <div>{{ restaurant.description }}</div>
+<!-- <h5 style="background: linear-gradient(90deg, lemonchiffon, white);padding-top: 10px;padding-bottom: 5px;">&nbsp;&nbsp;店舗説明</h5> -->
+<h5>&nbsp;&nbsp;店舗説明</h5>
+<div>{{ restaurant.description }}</div>
 </tr>
 </table>  
 
 <br>
-<h5>レビュー投稿</h5>
+<!-- <h5 style="background: linear-gradient(90deg, lemonchiffon, white);padding-top: 10px;padding-bottom: 5px;">&nbsp;&nbsp;レビュー投稿</h5> -->
+<h5>&nbsp;&nbsp;レビュー投稿</h5>
 
 {# ReviewViewを送信先にする。 #}
 
@@ -65,14 +75,16 @@
   </div>
   <div>
     <!-- reutaurant.idはpkで取得して固定値に -->
-    <!-- あとで style="display: none;"追記して非表示に -->
-    <input type="text" name="restaurant" value="{{ restaurant.id }}">
+    <!-- あとで style="display: none;"追記して非表示にすればOK？ -->
+    <input type="text" name="restaurant_id" value="{{ restaurant.id }}" rendonly>
+    <!-- <input type="text" name="restaurant" value="{{ restaurant.id }}"> -->
     <input type="text" name="user" value="{{ request.user.id }}">
 
     <input type="submit" value="送信">
   </div>
 </form>
 <br>
+<!-- <h4 style="font-weight: bold;">投稿されたレビュー一覧</h4> -->
 <h4>投稿されたレビュー一覧</h4>
 
 {# contextに与えられたreviewsを使ってレビューを表示 #}

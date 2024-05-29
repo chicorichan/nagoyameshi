@@ -80,11 +80,18 @@ li a:hover {
   color:#fffd7f;
 }
 
-
 /* ここまでがサイドバー */
 /* その他装飾 */
 h1 {
   color: rgba(4, 9, 82, 0.952);
   font-weight: bold;
+}
+
+h4{
+  font-weight: bold;
+}
+h5{
+  background: linear-gradient(90deg, lemonchiffon, white);
+  padding: 10px 0 5px 0;
 }
 

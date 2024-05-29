@@ -149,7 +149,7 @@ class RestaurantView(View):
         context["reviews"]      = Review.objects.filter(restaurant=pk)
 
         return render(request, "nagoyameshi/restaurant.html", context)
-
+    
 restaurant  = RestaurantView.as_view()
 
 #飲食店のレビューを受け付けるレビュー
