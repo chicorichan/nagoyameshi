@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views import View
-from .models import Restaurant,Category,Review
-from .forms import RestaurantCategorySearchForm,ReviewForm
+from .models import Restaurant,Category,Review,Fav
+from .forms import RestaurantCategorySearchForm,ReviewForm,FavForm
 
 # ページネーション
 from django.core.paginator import Paginator 
@@ -152,11 +152,22 @@ class RestaurantView(View):
     
 restaurant  = RestaurantView.as_view()
 
-#飲食店のレビューを受け付けるレビュー
+#飲食店のレビューを受け付けるビュー
 class ReviewView(View):
-    def post(salf, request, pk, *args, **kwargs):
+    def get(self, request, pk, *args, **kwargs):
 
-        form = ReviewForm(request.POST)
+        context = {}
+        context["restaurant"]    = Restaurant.objects.filter(id=pk).first()
+        context["users"]  = Restaurant.objects.filter(target=pk)
+
+        return render(request, "nagoyameshi/restaurant.html", context)
+    
+    def post(self, request, pk, *args, **kwargs):
+
+        copied = request.POST.copy()
+        copied["target"] = pk
+
+        form = ReviewForm(copied)
         if form.is_valid():
             form.save()
         else:
@@ -165,5 +176,15 @@ class ReviewView(View):
 
        #投稿した後は、飲食店詳細ページにリダイレクトする。
         return redirect("nagoyameshi:restaurant", pk)
-
 review = ReviewView.as_view()
+
+#飲食店のお気に入りを受けつけるビュー
+class FavView(View):
+    def post(self, request, pk, *args, **kwargs):
+
+        form =FavForm(request.POST)
+
+        #投稿した後は、飲食店詳細ページにリダイレクトする。
+        return redirect("nagoyameshi:restaurant", pk)
+
+fav = FavView.as_view()

@@ -3,7 +3,7 @@ from django.db import models
 from django.core.validators import MinValueValidator,MaxValueValidator
 from django.contrib.auth import get_user_model
 
-#Djangoの中にあるユーザーモデルえお用意することができる
+#Djangoの中にあるユーザーモデルを用意することができる
 User = get_user_model()
 
 #Create your models here.
@@ -56,8 +56,8 @@ class Review(models.Model):
 
     def star_icon(self):
         dic                 = {}
-        dic["true_star"]    = self.star * " "
-        dic["false_star"]   = (5-self.star)* " "
+        dic["true_star"]    = self.stars * " "
+        dic["false_star"]   = (5-self.stars)* " "
 
         return dic
 
@@ -67,6 +67,13 @@ class Fav(models.Model):
     created_date = models.DateTimeField(verbose_name="登録日",auto_now_add=True)
     user = models.ForeignKey(User, verbose_name="お気に入り登録ユーザー名", on_delete=models.CASCADE)
     restaurant = models.ForeignKey(Restaurant, verbose_name="対象飲食店", on_delete=models.CASCADE)
+
+    def fav_icon(self):
+        dic                 = {}
+        dic["on_fav"]    = self.favs * " "
+        dic["off_fav"]   = (1-self.favs)* " "
+
+        return dic
 
 #会社情報
 class Company(models.Model):
