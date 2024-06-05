@@ -154,9 +154,9 @@ restaurant  = RestaurantView.as_view()
 
 #飲食店のレビューを受け付けるビュー
 class ReviewView(View):
-    def get(self, request, pk, *args, **kwargs):
+    def post(self, request, pk, *args, **kwargs):
 
-        copied                  = request.POST.copy()
+        copied = request.POST.copy()
 
         # 送られてきたデータではなく、サーバー側でデータをセットして保存できる。
         copied["restaurant"]  = pk
@@ -200,7 +200,6 @@ class FavView(View):
 
 # urls.pyから呼び出せるようにする。
 fav = FavView.as_view()
-
 
 # マイページを表示するビュー
 class MypageView(View):
