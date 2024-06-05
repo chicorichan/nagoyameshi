@@ -20,7 +20,10 @@
 
 {% for review in reviews %}
 <div>{{ review.created_date }}: {{ review.restaurant.name }}</div>
-<div>{{ review.star }}</div>
+<div class="review_star">
+  <span class="review_true_star">{% for s in review.star_icon.true_star %}<i class="fas fa-star"></i>{% endfor %}</span>
+  <span class="review_false_star">{% for s in review.star_icon.false_star %}<i class="far fa-star"></i>{% endfor %}</span>
+</div>
 <div>{{ review.comment }}</div>
 {% endfor %}
 

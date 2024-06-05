@@ -211,7 +211,7 @@ class MypageView(View):
         # 自分のお気に入り登録をすべて取り出す。
         # 自分のユーザーid は request.user から確認できる。
         context["favs"] = Fav.objects.filter(user=request.user)
-
+        context["reviews"] = Review.objects.filter(user=request.user)
 
         # 自分が投稿したレビューも取り出せる。
         
