@@ -1,0 +1,28 @@
+{% extends "nagoyameshi/base.html" %}
+
+{% block extra_head %}
+{% endblock %}
+
+{% block main %}
+
+<h3>マイページ</h3>
+{# TODO: これまで登録した自分の、予約、お気に入り、レビューを確認できるようにする。 #}
+
+
+{# favs #}
+<h5>お気に入り店舗一覧</h5>
+
+{% for fav in favs %}
+<div>{{ fav.created_date }}: {{ fav.restaurant.name }}</div>
+{% endfor %}
+
+<h5>投稿レビュー一覧</h5>
+
+{% for review in reviews %}
+<div>{{ review.created_date }}: {{ review.restaurant.name }}</div>
+<div>{{ review.star }}</div>
+<div>{{ review.comment }}</div>
+{% endfor %}
+
+
+{% endblock %}

@@ -156,17 +156,14 @@ restaurant  = RestaurantView.as_view()
 class ReviewView(View):
     def get(self, request, pk, *args, **kwargs):
 
-        context = {}
-        context["restaurant"]    = Restaurant.objects.filter(id=pk).first()
-        context["users"]  = Restaurant.objects.filter(target=pk)
+        copied                  = request.POST.copy()
 
-        return render(request, "nagoyameshi/restaurant.html", context)
-    
-    def post(self, request, pk, *args, **kwargs):
+        # 送られてきたデータではなく、サーバー側でデータをセットして保存できる。
+        copied["restaurant"]  = pk
+        copied["user"]  = request.user
 
-        copied = request.POST.copy()
-        copied["target"] = pk
-
+        #copied["comment"]       = "サーバー側でコメントがセットされました。"
+        # 編集されたデータをバリデーションに掛ける。
         form = ReviewForm(copied)
         if form.is_valid():
             form.save()
@@ -176,15 +173,51 @@ class ReviewView(View):
 
        #投稿した後は、飲食店詳細ページにリダイレクトする。
         return redirect("nagoyameshi:restaurant", pk)
+
 review = ReviewView.as_view()
+
 
 #飲食店のお気に入りを受けつけるビュー
 class FavView(View):
     def post(self, request, pk, *args, **kwargs):
 
-        form =FavForm(request.POST)
+        copied = request.POST.copy()
 
-        #投稿した後は、飲食店詳細ページにリダイレクトする。
+        copied["restaurant"] = pk
+        copied["user"] = request.user
+
+        # FavFormを使ってバリデーション
+        form = FavForm(copied)
+
+        if form.is_valid():
+            form.save()
+        else:
+            print("保存失敗")
+            print(form.errors)
+    
+        # 飲食店の詳細ページへリダイレクト
         return redirect("nagoyameshi:restaurant", pk)
 
+# urls.pyから呼び出せるようにする。
 fav = FavView.as_view()
+
+
+# マイページを表示するビュー
+class MypageView(View):
+    def get(salf, request, *args, **kwargs):
+
+        # 予約の一覧、お気に入りの一覧、レビュー一覧がそれぞれ見れるようにする
+        context = {}
+
+        # 自分のお気に入り登録をすべて取り出す。
+        # 自分のユーザーid は request.user から確認できる。
+        context["favs"] = Fav.objects.filter(user=request.user)
+
+
+        # 自分が投稿したレビューも取り出せる。
+        
+
+        return render(request, "nagoyameshi/mypage.html", context)
+
+# urls.pyから呼び出せるようにする。
+mypage = MypageView.as_view()
