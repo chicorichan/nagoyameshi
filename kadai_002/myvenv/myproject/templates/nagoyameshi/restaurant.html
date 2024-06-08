@@ -34,11 +34,29 @@
           <br>
           <!-- お気に入り登録（試し) -->
           <div style="text-align: right;">
-          <form id="fav_Form" action="{% url 'nagoyameshi:fav' restaurant.id %}" method="post">
-            {% csrf_token %}
-            <input class="btn btn-outline-success" type="submit" value="お気に入り登録">
+            <form id="fav_Form" action="{% url 'nagoyameshi:fav' restaurant.id %}" method="post">
+              {% csrf_token %}
+  
+            {% comment %}
+              {% if is_faved %}
+              <input class="btn btn-success" type="submit" value="お気に入り解除">
+              {% else %}
+              <input class="btn btn-outline-success" type="submit" value="お気に入り登録">
+              {% endif %}
+            {% endcomment %}
+  
+              {# アイコンを使ったお気に入り。 #}
+              <input id="fav_submit" type="submit" style="display:none;">
+              <label class="fav_check_label" for="fav_submit">
+                {% if is_faved %}
+                <div class="on_fav" ><i class="fas fa-heart"></i></div>
+                {% else %}
+                <div class="off_fav"><i class="far fa-heart"></i></div>
+                {% endif %}
+              </label>
+               
           {% comment %}
-          <input id="fav_check" type="checkbox" name="favs" value="1"> -->
+          <input id="fav_check" type="checkbox" name="favs" value="1"> 
           <div class="fav_check_label_area">
             <div class="fav_check_label_flex">
                 <label class="fav_check_label" for="fav_check"><div class="on_fav" ><i class="fas fa-heart"></i></div><div class="off_fav"><i class="far fa-heart"></i></div></label>
@@ -58,14 +76,12 @@
   </div>
 </section>
 
-<!-- <h5 style="background: linear-gradient(90deg, lemonchiffon, white);padding-top: 10px;padding-bottom: 5px;">&nbsp;&nbsp;店舗説明</h5> -->
 <h5>&nbsp;&nbsp;店舗説明</h5>
 <div>{{ restaurant.description }}</div>
 </tr>
 </table>  
 
 <br>
-<!-- <h5 style="background: linear-gradient(90deg, lemonchiffon, white);padding-top: 10px;padding-bottom: 5px;">&nbsp;&nbsp;レビュー投稿</h5> -->
 <h5>&nbsp;&nbsp;レビュー投稿</h5>
 
 {# ReviewViewを送信先にする。 #}

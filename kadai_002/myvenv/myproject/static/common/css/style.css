@@ -80,6 +80,15 @@ li a:hover {
   color:#fffd7f;
 }
 
+.nav_labal_area {
+  display:inline-block;
+}
+
+#logout_label:hover {
+  text-decoration: none;
+  color:#fffd7f;  
+}
+
 /* ここまでがサイドバー */
 /* その他装飾 */
 h1 {

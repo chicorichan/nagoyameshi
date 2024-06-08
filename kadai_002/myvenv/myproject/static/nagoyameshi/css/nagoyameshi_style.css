@@ -27,12 +27,13 @@ p {
 /* お気に入り用ハートアイコン装飾変更 */
 .on_fav {
   color: #f75b8a;
-  display:none;
+  /* display:none; */
 }
 .off_fav {
   color:gray;
 }
 
+/* 未使用 
 input[type="checkbox"]{
   display:none;
 }
@@ -47,9 +48,10 @@ input[type="checkbox"]{
 .fav_check_label{
   cursor:pointer;
 }
-/* チェック時の装飾 */
+/* チェック時の装飾
 #fav_check[type="checkbox"]:checked ~ .fav_check_label_area > .fav_check_label_flex > label[for="fav_check"] > .on_fav{ display:inline-block; }
 #fav_check[type="checkbox"]:checked ~ .fav_check_label_area > .fav_check_label_flex > label[for="fav_check"] > .off_fav{ display:none; }
+/* 未使用 */
 
 /* レビュー装飾 */
 input[type="radio"]{

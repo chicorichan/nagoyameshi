@@ -1,0 +1,20 @@
+{% extends "nagoyameshi/base.html" %}
+
+{% block extra_head %}
+{% endblock %}
+
+{% block main %}
+
+
+{# 予約の送信先 #}
+<form action="" method="post">
+    {% csrf_token %}
+
+
+    <input type="text" name="date">
+    <input type="number" name="people">
+
+    <input type="submit" value="予約">
+</form>
+
+{% endblock %}

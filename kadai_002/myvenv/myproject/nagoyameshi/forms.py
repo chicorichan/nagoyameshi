@@ -1,6 +1,6 @@
 # 送られてきたデータがルールにあっているかをチェックするために必要
 from django import forms
-from .models import Restaurant, Review, Fav
+from .models import Restaurant, Review, Fav, Reservation
 
 # Restaurantで検索するためのフォームクラスを作る
 class RestaurantCategorySearchForm(forms.ModelForm):
@@ -29,3 +29,10 @@ class FavForm(forms.ModelForm):
     class Meta:
         model   = Fav
         fields  = ["user","restaurant"]
+
+#reservationのバリデーション用フォーム
+class ReservationForm(forms.ModelForm):
+
+    class Meta:
+        model   = Reservation
+        fields  = ["date","user","restaurant","people"]

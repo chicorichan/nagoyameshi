@@ -11,6 +11,10 @@
 
     <link rel="stylesheet" type="text/css" href="{% static 'common/css/style.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'nagoyameshi/css/nagoyameshi_style.css' %}">
+    
+    {# favicon.ico表示 #}
+    <link href="{% static 'common/img/favicon.ico' %}" rel="icon">
+
     {% block extra_head %}
 
     {% endblock %}
@@ -32,12 +36,21 @@
           <br>
           <li>問い合わせ</li>
           <br>
-          <li>ログイン</li>
+          {% if not request.user.is_authenticated %}
+          <li><a href="{% url 'login' %}">ログイン</a></li>
           <br>
+          {% else %}
           <!-- 以下をログインしたら表示されるようにしたい -->
           <li><a class="menu_link" href="http://127.0.0.1:8000/mypage/">マイページ</a></li>
           <br>
-          <li>ログアウト</li>
+          <form action="{% url 'logout' %}" method="post" >
+          {% csrf_token %}
+          <input id="nav_link" type="submit" style="display: none;" value="ログアウト">
+          <div class="nav_labal_area">
+            <li><label id="logout_label" for="nav_link">ログアウト</label> </li>
+          </div>
+          </form>
+          {% endif %}
         </ul>
       </div>
        <label class="sidebar_label" for="sidebar_chk">menu</label>

@@ -11,6 +11,7 @@ urlpatterns = [
     path('review/<int:pk>/', views.review, name="review"),
     path('Fav/<int:pk>/', views.fav, name="fav"),
     path('mypage/', views.mypage, name="mypage"),
+    path('reservation/<int:pk>/', views.reservation, name="reservation"),
 ]
 
 #画像のURL設定

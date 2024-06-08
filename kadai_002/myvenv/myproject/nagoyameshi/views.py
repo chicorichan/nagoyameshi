@@ -1,11 +1,16 @@
 from django.shortcuts import render, redirect
 from django.views import View
-from .models import Restaurant,Category,Review,Fav
-from .forms import RestaurantCategorySearchForm,ReviewForm,FavForm
+from .models import Restaurant,Category,Review,Fav,Reservation
+
+from .forms import RestaurantCategorySearchForm,ReviewForm,FavForm, ReservationForm
+
 
 # ページネーション
 from django.core.paginator import Paginator 
 from django.db.models import Q
+
+# ログイン必須とするために必要
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 class IndexView(View):
 
@@ -178,22 +183,30 @@ review = ReviewView.as_view()
 
 
 #飲食店のお気に入りを受けつけるビュー
+# お気に入り登録する店舗、すでに登録されていないか、チェックする。
 class FavView(View):
     def post(self, request, pk, *args, **kwargs):
 
         copied = request.POST.copy()
 
-        copied["restaurant"] = pk
-        copied["user"] = request.user
+        # 店舗(restaurant)、ユーザー(user)がFavの中にあるかは .exists() を使う
+        fav = Fav.objects.filter(restaurant=pk, user=request.user)
 
-        # FavFormを使ってバリデーション
-        form = FavForm(copied)
-
-        if form.is_valid():
-            form.save()
+        # お気に入り登録している場合は、削除をする。
+        if fav:
+            fav.delete()
+        # 登録していない場合は、作成する。
         else:
-            print("保存失敗")
-            print(form.errors)
+            copied["restaurant"] = pk
+            copied["user"] = request.user
+            # FavFormを使ってバリデーション
+            form = FavForm(copied)
+
+            if form.is_valid():
+                form.save()
+            else:
+                print("保存失敗")
+                print(form.errors)
     
         # 飲食店の詳細ページへリダイレクト
         return redirect("nagoyameshi:restaurant", pk)
@@ -201,7 +214,29 @@ class FavView(View):
 # urls.pyから呼び出せるようにする。
 fav = FavView.as_view()
 
+#予約受付のビュー
+class ReservationView(LoginRequiredMixin, View):
+
+    def get(self, request, pk, *args, **kwargs):
+        return render(request,"nagoyameshi/reservation.html" )
+    
+    # pkを、Restaurantのpkとする。
+    def post(self, request, pk, *args, **kwargs):
+        # 予約を受け付ける
+
+        """
+        pk(予約したい店舗), request.user(予約する人)、
+        
+        ユーザー側から受け取る。
+        date(予約日時), people(人数)
+        """
+
+        return redirect("nagoyameshi:mypage")
+
+reservation = ReservationView.as_view()
+
 # マイページを表示するビュー
+# マイページはログイン済みのユーザーのみ発動
 class MypageView(View):
     def get(salf, request, *args, **kwargs):
 
@@ -215,7 +250,6 @@ class MypageView(View):
 
         # 自分が投稿したレビューも取り出せる。
         
-
         return render(request, "nagoyameshi/mypage.html", context)
 
 # urls.pyから呼び出せるようにする。
