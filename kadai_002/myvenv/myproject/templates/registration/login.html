@@ -1,16 +1,49 @@
 {% extends "registration/base.html" %}
 
 {% block main %}
-
-<a href="{% url 'signup' %}">アカウント新規作成</a>
-<a href="{% url 'password_reset' %}">パスワードを忘れた</a>
-<h2>ログイン</h2>
-
+<div class="container">
+<div class="table-responsive">
+<section>
+<h3>ログイン</h3>
+{% comment %}
 <form method="post" action="{% url 'login' %}">
     {% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="ログイン">
 </form>
+{% endcomment %}
+<div style="text-align: center;">
+<form method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+<p>
+    <label for="id_username">メールアドレス（半角英数字）</label><br>
+    <input type="text" name="username" autofocus="" autocapitalize="none" autocomplete="username" maxlength="254" required="" id="id_username">
+</p>
+<p>
+    <label for="id_password">パスワード</label><br>
+    <input type="password" name="password" autocomplete="current-password" required="" id="id_password">
+</p>
+<button class="btn btn-outline-info">
+    <input id="login_link" type="submit" style="display: none;" value="ログイン">   
+          <div class="login_labal_area">
+            <label id="login_label" for="login_link">ログイン</label>
+          </div>
+</button>    
+</form>
 
+<br>
+<p style="text-align: center;">
+    <i class="fas fa-check"></i><a href="{% url 'password_reset' %}">パスワードを忘れた方はこちら</a>
+</p>
+<p class="u-line"></p>
+<p>
+    <button class="btn btn-warning">
+        <a style="text-decoration: none; color:  rgba(4, 9, 82, 0.952);"  href="{% url 'signup' %}">新規会員登録</a>
+    </button>
+</p>
+</div>
+</section>
+</div>
+</div>
 {% endblock %}
 
