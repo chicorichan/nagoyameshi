@@ -6,41 +6,48 @@
 <section>
 <h3>ログイン</h3>
 {% comment %}
-<form method="post" action="{% url 'login' %}">
+<form id="login_top" method="post" action="{% url 'login' %}">
     {% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="ログイン">
 </form>
 {% endcomment %}
+<img class="image" src='/media/nagoyameshi/restaurant/img/misokatu.jpg'/>
+<img class="image" src='/media/nagoyameshi/restaurant/img/ekimae.jpg'/>
+<img class="image" src='/media/nagoyameshi/restaurant/img/anbata.jpg'/>
+<img class="image" src='/media/nagoyameshi/restaurant/img/nagoyajyo.jpg'/>
+<img class="image" src='/media/nagoyameshi/restaurant/img/hitumabushi.jpg'/>
+
 <div style="text-align: center;">
 <form method="post" action="{% url 'login' %}">
+<br>
     {% csrf_token %}
 <p>
     <label for="id_username">メールアドレス（半角英数字）</label><br>
     <input type="text" name="username" autofocus="" autocapitalize="none" autocomplete="username" maxlength="254" required="" id="id_username">
 </p>
 <p>
-    <label for="id_password">パスワード</label><br>
+    <label for="id_password">パスワード（8桁以上の半角英数字）</label><br>
     <input type="password" name="password" autocomplete="current-password" required="" id="id_password">
 </p>
-<button class="btn btn-outline-info">
+<button class="btn btn-info">
     <input id="login_link" type="submit" style="display: none;" value="ログイン">   
           <div class="login_labal_area">
             <label id="login_label" for="login_link">ログイン</label>
           </div>
-</button>    
-</form>
-
-<br>
+</button>
 <p style="text-align: center;">
     <i class="fas fa-check"></i><a href="{% url 'password_reset' %}">パスワードを忘れた方はこちら</a>
 </p>
-<p class="u-line"></p>
+
 <p>
     <button class="btn btn-warning">
         <a style="text-decoration: none; color:  rgba(4, 9, 82, 0.952);"  href="{% url 'signup' %}">新規会員登録</a>
     </button>
-</p>
+</p>    
+</form>
+<br>
+<br>
 </div>
 </section>
 </div>

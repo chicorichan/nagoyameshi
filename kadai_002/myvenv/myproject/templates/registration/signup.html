@@ -1,14 +1,20 @@
 {% extends "registration/base.html" %}
 
 {% block main %}
-
+<div class="container">
+<div class="table-responsive">
+<section>
 <a href="{% url 'login' %}">ログインする</a>
-<h3>アカウント新規作成</h3>
-
+<h3>新規アカウント作成</h3>
+<div style="text-align: center; background-color:rgb(243, 243, 243); margin-top: 0;">
+<br>
+<label><i class="fas fa-check"></i>以下の項目を入力して、アカウント取得の手続を開始してください。</label><br>
 <form action="{% url 'signup' %}" method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <input type="submit" value="アカウント新規作成">
+    <input type="submit" value="新規アカウント作成">
 </form>
-
+</section>
+</div>
+</div>
 {% endblock %}

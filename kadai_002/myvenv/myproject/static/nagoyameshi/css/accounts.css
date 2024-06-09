@@ -1,0 +1,49 @@
+.fa-check {
+  color: rgba(4, 9, 82, 0.952);
+}
+
+.container {
+	position: relative;
+}
+
+.image {
+	position: absolute;
+	opacity: 0;
+	animation: change-img-anim 50s infinite;
+  z-index: -1; /* 他の要素よりも後ろに配置 */ 
+  width: 100%; 
+  padding-right: 30px;
+}
+
+.image:nth-of-type(1) {
+	animation-delay: 0s;
+}
+.image:nth-of-type(2) {
+	animation-delay: 10s;
+}
+.image:nth-of-type(3) {
+	animation-delay: 20s;
+}
+.image:nth-of-type(4) {
+	animation-delay: 30s;
+}
+.image:nth-of-type(5) {
+	animation-delay: 40s;
+}
+
+@keyframes change-img-anim {
+	0%{ opacity: 0;}
+	15%{ opacity: 0.5;}
+	25%{ opacity: 0.3;}
+	30%{ opacity: 0;}
+	100%{ opacity: 0;}
+}
+
+form {
+  margin:20px 200px 0 200px;
+  padding: 1em;
+  border: 0px solid #ccc;
+  border-radius: 1em;
+  background-color: white;
+  opacity: 0.8;
+}
