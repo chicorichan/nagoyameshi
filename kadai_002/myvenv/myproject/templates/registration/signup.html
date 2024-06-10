@@ -8,12 +8,45 @@
 <h3>新規アカウント作成</h3>
 <div style="text-align: center; background-color:rgb(243, 243, 243); margin-top: 0;">
 <br>
-<label><i class="fas fa-check"></i>以下の項目を入力して、アカウント取得の手続を開始してください。</label><br>
+<label><i class="fas fa-check"></i>以下全ての項目を入力して、アカウント取得の手続を開始してください</label><br>
+{% comment %}
 <form action="{% url 'signup' %}" method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="新規アカウント作成">
 </form>
+{% endcomment %}
+
+<form action="{% url 'signup' %}" method="post">
+<p>
+<label for="id_username">ユーザー名</label><br>
+<span class="helptext" id="id_username_helptext" style="font-size: small;">半角英数字、@/./+/-/_ で150文字以下にしてください。</span><br>
+<input type="text" name="username" maxlength="150" autocapitalize="none" autocomplete="username" required="" aria-describedby="id_username_helptext" id="id_username"><br>
+
+</p>
+<p>
+<label for="id_email">メールアドレス</label><br>
+<input type="email" name="email" maxlength="254" autofocus="" required="" id="id_email">
+</p>
+<p>
+<label for="id_password1">パスワード</label><br>
+<input type="password" name="password1" autocomplete="new-password" required="" aria-describedby="id_password1_helptext" id="id_password1">
+<span class="helptext" id="id_password1_helptext"></span>
+</p> 
+    <ul style="font-size: small;">
+        <li>あなたの個人情報に似たパスワードには設定できません。</li>
+        <li>パスワードは最低８文字以上必要です。</li>
+        <li>よく使われるパスワードには設定できません。</li>
+        <li>数字だけのパスワードには設定できません。</li>
+    </ul>
+<p>
+<label for="id_password2">パスワード(確認用)</label><br>
+<span class="helptext" id="id_password2_helptext" style="font-size: small;">確認のため、再度パスワードを入力してください。</span><br>    
+<input type="password" name="password2" autocomplete="new-password" required="" aria-describedby="id_password2_helptext" id="id_password2">
+</p>
+<input type="submit" value="新規アカウント作成">
+</form>
+
 </section>
 </div>
 </div>
