@@ -12,6 +12,9 @@ from django.db.models import Q
 # ログイン必須とするために必要
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+# DjangoMessageFramework
+from django.contrib import messages
+
 class IndexView(View):
 
     def get(self, request, *args, **kwargs):
@@ -153,6 +156,15 @@ class RestaurantView(View):
         #Review.objects.filter(restaurant=pk)になる
         context["reviews"]      = Review.objects.filter(restaurant=pk)
 
+        # ユーザーがこの店舗をお気に入り登録しているかをチェックする。
+
+        if request.user.is_authenticated:
+            #                                                  ↓未ログイン状態で検索するとエラーになる。
+            context["is_faved"]     = Fav.objects.filter(user=request.user,restaurant=context["restaurant"]).exists()
+        else:
+            context["is_faved"]     = False
+
+
         return render(request, "nagoyameshi/restaurant.html", context)
     
 restaurant  = RestaurantView.as_view()
@@ -191,6 +203,9 @@ class FavView(View):
 
         # 店舗(restaurant)、ユーザー(user)がFavの中にあるかは .exists() を使う
         fav = Fav.objects.filter(restaurant=pk, user=request.user)
+        
+        context = {}
+        context["is_faved"] = Fav.objects.filter(user=request.user).exists()
 
         # お気に入り登録している場合は、削除をする。
         if fav:

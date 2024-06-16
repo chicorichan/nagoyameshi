@@ -5,7 +5,14 @@
 .container {
 	position: relative;
 }
-
+form {
+  margin:20px 200px 0 200px;
+  padding: 1em;
+  border: 0px solid #ccc;
+  border-radius: 1em;
+  background-color: white;
+  opacity: 0.8;
+}
 .image {
 	position: absolute;
 	opacity: 0;
@@ -39,11 +46,3 @@
 	100%{ opacity: 0;}
 }
 
-form {
-  margin:20px 200px 0 200px;
-  padding: 1em;
-  border: 0px solid #ccc;
-  border-radius: 1em;
-  background-color: white;
-  opacity: 0.8;
-}

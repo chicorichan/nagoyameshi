@@ -31,16 +31,16 @@ p {
 }
 
 /* お気に入り用ハートアイコン装飾変更 */
-.fa-heart:hover::before{
-	color: #f75b8a;
-}
 
 .on_fav {
   color: #f75b8a;
-  display: inline-block;
+  /* display: inline-block; */
 }
 .off_fav {
   color:gray;
+}
+.fa-heart:hover::before{
+	color: #f75b8a;
 }
 
 /* 未使用 

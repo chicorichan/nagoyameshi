@@ -45,9 +45,10 @@
               {% endif %}
             {% endcomment %}
   
-              {# アイコンを使ったお気に入り。 #}
+            {# アイコンを使ったお気に入り。 #}
               <input id="fav_submit" type="submit" style="display:none;" ,value="お気に入り">
               <label id="fav_check_label"  for="fav_submit">
+
                 {% if is_faved %}
                 <div class="on_fav"><i class="fas fa-heart fa-2x"></i></div>
                 {% else %}
