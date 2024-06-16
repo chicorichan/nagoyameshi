@@ -5,6 +5,15 @@
 {% endblock %}
 
 {% block main %}
+<!-- お気に入りの登録やレビュー投稿の成功か失敗かのメッセージ表示 -->
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
 <div class="container">
 <div class="table-responsive">
 <section>
@@ -27,7 +36,7 @@
             <p class="u-line"></p>
           <div>
           <i class="fas fa-envelope"></i>&nbsp;
-          <input type="submit" value="予約" class="btn btn-info">&nbsp;
+          <a class="btn btn-info" href="{% url 'nagoyameshi:reservation' restaurant.id %}">予約をする</a>          
           <input type="submit" value="問合せ" class="btn btn-outline-info">
           </div>
           <br>
@@ -36,14 +45,6 @@
           <div style="text-align: right;">
             <form action="{% url 'nagoyameshi:fav' restaurant.id %}" method="post">
               {% csrf_token %}
-  
-            {% comment %}
-              {% if is_faved %}
-              <input class="btn btn-success" type="submit" value="お気に入り解除">
-              {% else %}
-              <input class="btn btn-outline-success" type="submit" value="お気に入り登録">
-              {% endif %}
-            {% endcomment %}
   
             {# アイコンを使ったお気に入り。 #}
               <input id="fav_submit" type="submit" style="display:none;" ,value="お気に入り">

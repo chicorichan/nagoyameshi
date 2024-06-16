@@ -184,9 +184,14 @@ class ReviewView(View):
         form = ReviewForm(copied)
         if form.is_valid():
             form.save()
+
+            # messages を使って、投稿完了をフロントに表示させる。
+            messages.success(request, "レビュー投稿が完了しました")
+
         else:
             print("保存失敗")
             print(form.errors)
+            messages.info(request, "レビュー投稿が失敗しました")
 
        #投稿した後は、飲食店詳細ページにリダイレクトする。
         return redirect("nagoyameshi:restaurant", pk)
@@ -233,12 +238,16 @@ fav = FavView.as_view()
 class ReservationView(LoginRequiredMixin, View):
 
     def get(self, request, pk, *args, **kwargs):
-        return render(request,"nagoyameshi/reservation.html" )
+
+        # TODO:店舗情報も表示させる
+        context = {}
+        context["restaurant"]   = Restaurant.objects.filter(id=pk).first()
+
+        return render(request,"nagoyameshi/reservation.html", context)
     
     # pkを、Restaurantのpkとする。
     def post(self, request, pk, *args, **kwargs):
         # 予約を受け付ける
-
         """
         pk(予約したい店舗), request.user(予約する人)、
         
@@ -246,9 +255,24 @@ class ReservationView(LoginRequiredMixin, View):
         date(予約日時), people(人数)
         """
 
+        # date と peopleの2つに、 restaurant とuserを加える。
+        copied  = request.POST.copy()
+
+        copied["restaurant"] = pk
+        copied["user"] = request.user
+
+        form = ReservationForm(copied)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, "予約が完了しました")
+        else:
+            print(form.errors)
+            messages.info(request, "予約ができませんでした")
         return redirect("nagoyameshi:mypage")
 
 reservation = ReservationView.as_view()
+
 
 # マイページを表示するビュー
 # マイページはログイン済みのユーザーのみ発動
@@ -257,6 +281,9 @@ class MypageView(View):
 
         # 予約の一覧、お気に入りの一覧、レビュー一覧がそれぞれ見れるようにする
         context = {}
+
+        # 自分が予約した情報を取り出す。
+        context["reservations"] = Reservation.objects.filter(user=request.user)
 
         # 自分のお気に入り登録をすべて取り出す。
         # 自分のユーザーid は request.user から確認できる。

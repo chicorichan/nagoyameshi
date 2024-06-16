@@ -38,6 +38,9 @@ class Restaurant(models.Model):
     start = models.TimeField(verbose_name="営業開始")
     end = models.TimeField(verbose_name="営業終了")
 
+# TODO: 追加のバリデーション用
+from django.utils import timezone
+from django.core.exceptions import ValidationError
 
 #予約モデル
 class Reservation(models.Model):
@@ -45,6 +48,29 @@ class Reservation(models.Model):
     user = models.ForeignKey(User, verbose_name="予約者", on_delete=models.CASCADE)
     restaurant = models.ForeignKey(Restaurant, verbose_name="対象飲食店", on_delete=models.CASCADE)
     people = models.PositiveIntegerField(verbose_name="予約人数")
+
+    # Reservationを保存する時、↓の処理が発動される
+    # raise ValidationError() をすることで、保存を阻止できる。引数に書いたエラーメッセージを表示できる。
+    def clean(self):
+        super().clean()
+
+        # 保存しようとしているデータは self 
+        if self.people > self.restaurant.capacity:
+            raise ValidationError("受け入れ人数を超過しています")
+        
+        now = timezone.now()
+        # one_day_ago = timezone.now() - timezone.timedelta(days=1)
+        # print(one_day_ago)
+        # if self.date < one_day_ago:
+        if self.date < now:
+            raise ValidationError("この日程では予約できません")
+
+        # 営業時間のチェック
+        if self.date.time() < self.restaurant.start:
+            raise ValidationError("営業時間前です")
+
+        if self.date.time() > self.restaurant.end:
+            raise ValidationError("営業時間後です")
 
 #レビューモデル
 class Review(models.Model):

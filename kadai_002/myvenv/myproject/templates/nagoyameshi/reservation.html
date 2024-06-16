@@ -1,20 +1,47 @@
 {% extends "nagoyameshi/base.html" %}
 
 {% block extra_head %}
+<!--日本語化用JS-->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
 {% endblock %}
 
 {% block main %}
-
-
+<h3>・・・予約をする</h3>
+{# TODO: 店舗情報を表示する #}
+<h4>【{{ restaurant.category }}】{{ restaurant.name }}</h4>  
+<div class="outline">
+    <i class="fas fa-clock"></i>&nbsp;&nbsp;営業時間:{{ restaurant.start }}～{{ restaurant.end }}／
+<!-- <p class="u-line"></p> -->
+    <i class="fas fa-coin"></i>&nbsp;&nbsp;平均予算:¥{{ restaurant.budget }}／
+<!-- <p class="u-line"></p> -->
+    <i class="fas fa-user"></i>&nbsp;&nbsp;受入可能人数:{{ restaurant.capacity }}人
+<!-- <p class="u-line"></p> -->
+<div>
 {# 予約の送信先 #}
+<h5>&nbsp;&nbsp;予約入力</h5>
+<br>
 <form action="" method="post">
     {% csrf_token %}
 
-
-    <input type="text" name="date">
-    <input type="number" name="people">
-
-    <input type="submit" value="予約">
+    {# <input type="text" name="date"> #}
+    {# type="datetime-local" は 日付と時間を両方指定できるフォーム  #}
+    <input type="datetime-local" name="date">
+    {# DateTimeFieldのフォームは、日時のフォーマットに沿っていないとバリデーションエラーになる。 #}
+    {# Flatpickr を使うことで更に使いやすくできる。 https://noauto-nolife.com/post/flatpickr-install/ #}
+    <input type="number" name="people" placeholder="予約人数を入力"><span>人</span>
+    <br><br>
+    <input type="submit" value="予約" class="btn btn-info">
 </form>
+<br>
+<h5>&nbsp;&nbsp;予約時の諸注意</h5>
+<ul>
+    <li>予約確認のため、<span style="font-weight: bold;">登録してるお電話番号やメールアドレスにご連絡</span>することがございます。</li>
+    <li>仕入れ状況により食材やメニューが一部変更となる可能性がございます。</li>
+    <li>予約のキャンセルや人数変更をされる場合は、<span style="font-weight: bold;">予約日の前日まで</span>にご連絡ください。</li>
+    <li><span style="font-weight: bold;">当日のキャンセルはキャンセル料が発生</span>する場合がございます。</li>
+    <li>お店へ連絡なくキャンセルされた場合、当サイトのご利用サービスの制限、または登録を解除させていただく場合があります。</li>
+</ul>
+
+
 
 {% endblock %}

@@ -167,3 +167,43 @@ label[for="star_radio_5"]:hover ~ label[for="star_radio_1"] > .false_star{ displ
 #star_radio_5[type="radio"]:checked ~ .star_radio_label_area > .star_radio_label_flex > label[for="star_radio_3"] > .false_star,
 #star_radio_5[type="radio"]:checked ~ .star_radio_label_area > .star_radio_label_flex > label[for="star_radio_2"] > .false_star,
 #star_radio_5[type="radio"]:checked ~ .star_radio_label_area > .star_radio_label_flex > label[for="star_radio_1"] > .false_star{ display:none; }
+
+/* message_area */
+.notify_message_area{
+  position:fixed;
+  width:100%;
+  top:0;
+  left:0;
+}
+.notify_message{
+  color:white;
+  padding:1rem;
+  margin:1rem;
+  border-radius:0.5rem;
+
+  display:flex;
+
+  background:skyblue;
+}
+.notify_message_success{
+  background:palegreen;
+}
+.notify_message_error{
+  background:yellow;
+}
+.notify_message_content {
+  width:calc(100% - 2rem);
+  font-size:1.25rem;
+}
+.notify_message_delete {
+  cursor:pointer;
+  width:2rem;
+  transition:0.2s;
+}
+.notify_message_delete i{
+  font-size:1.5rem;
+}
+.notify_message_delete:hover{
+  color:black;
+  transition:0.2s;
+}
