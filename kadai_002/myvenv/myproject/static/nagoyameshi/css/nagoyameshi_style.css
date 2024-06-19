@@ -176,20 +176,20 @@ label[for="star_radio_5"]:hover ~ label[for="star_radio_1"] > .false_star{ displ
   left:0;
 }
 .notify_message{
-  color:white;
+  color:rgb(43, 42, 42);
   padding:1rem;
   margin:1rem;
   border-radius:0.5rem;
 
   display:flex;
 
-  background:skyblue;
+  background:rgb(135, 206, 235,0.7);
 }
 .notify_message_success{
-  background:palegreen;
+  background:rgb(152, 251, 152,0.7);
 }
 .notify_message_error{
-  background:yellow;
+  background:rgb(255, 255, 0,0.7);
 }
 .notify_message_content {
   width:calc(100% - 2rem);
@@ -204,6 +204,6 @@ label[for="star_radio_5"]:hover ~ label[for="star_radio_1"] > .false_star{ displ
   font-size:1.5rem;
 }
 .notify_message_delete:hover{
-  color:black;
+  color:rgb(107, 104, 104);
   transition:0.2s;
 }

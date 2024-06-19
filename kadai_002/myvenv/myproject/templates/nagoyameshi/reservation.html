@@ -4,7 +4,14 @@
 <!--日本語化用JS-->
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
 {% endblock %}
-
+<!-- お気に入りの登録やレビュー投稿の成功か失敗かのメッセージ表示 -->
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
 {% block main %}
 <h3>・・・予約をする</h3>
 {# TODO: 店舗情報を表示する #}
@@ -39,7 +46,7 @@
     <li>仕入れ状況により食材やメニューが一部変更となる可能性がございます。</li>
     <li>予約のキャンセルや人数変更をされる場合は、<span style="font-weight: bold;">予約日の前日まで</span>にご連絡ください。</li>
     <li><span style="font-weight: bold;">当日のキャンセルはキャンセル料が発生</span>する場合がございます。</li>
-    <li>お店へ連絡なくキャンセルされた場合、当サイトのご利用サービスの制限、または登録を解除させていただく場合があります。</li>
+    <li>お店へ連絡なくキャンセルされた場合、ご利用サービスの制限、または登録を解除させていただく場合があります。</li>
 </ul>
 
 

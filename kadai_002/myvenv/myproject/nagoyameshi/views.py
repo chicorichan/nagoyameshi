@@ -215,6 +215,7 @@ class FavView(View):
         # お気に入り登録している場合は、削除をする。
         if fav:
             fav.delete()
+            messages.success(request, "お気に入り登録解除しました")
         # 登録していない場合は、作成する。
         else:
             copied["restaurant"] = pk
@@ -224,6 +225,7 @@ class FavView(View):
 
             if form.is_valid():
                 form.save()
+                messages.success(request, "お気に入り登録しました")
             else:
                 print("保存失敗")
                 print(form.errors)
@@ -269,6 +271,12 @@ class ReservationView(LoginRequiredMixin, View):
         else:
             print(form.errors)
             messages.info(request, "予約ができませんでした")
+            values          = form.errors.get_json_data().values()
+
+            for value in values:
+                for v in value:
+                    messages.error(request, v["message"])
+                    
         return redirect("nagoyameshi:mypage")
 
 reservation = ReservationView.as_view()

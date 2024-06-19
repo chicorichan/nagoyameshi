@@ -5,13 +5,15 @@
 
 {% block main %}
 <!-- 予約の投稿が成功か失敗かのメッセージ表示 -->
-{% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
+<!-- お気に入りの登録やレビュー投稿の成功か失敗かのメッセージ表示 -->
+<div class="notify_message_area">
+  {% for message in messages %}
+  <div class="notify_message notify_message_{{ message.tags }}">
+      <div class="notify_message_content">{{ message }}</div>
+      <div class="notify_message_delete"><i class="fas fa-times"></i></div>
+  </div>
+  {% endfor %}
+</div>
 
 <h3>マイページ</h3>
 {# TODO: これまで登録した自分の、予約、お気に入り、レビューを確認できるようにする。 #}

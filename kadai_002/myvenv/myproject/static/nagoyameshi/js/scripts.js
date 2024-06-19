@@ -8,14 +8,13 @@
    }
 
    //5秒経ったら自動的に消す
-   /*
+
    setTimeout( () => {
        const messages  = document.querySelectorAll(".notify_message");
        for (let message of messages){
            message.remove();
        }
    }, "5000");
-   */
 
   //  flatpickrを発動させるためのscript
   window.addEventListener("load" , function (){ 
