@@ -32,7 +32,11 @@
 
     {# <input type="text" name="date"> #}
     {# type="datetime-local" は 日付と時間を両方指定できるフォーム  #}
-    <input type="datetime-local" name="date">
+    {#<input type="datetime-local" name="date"> #}
+
+    {# 今から24時間後の日時を min 属性に入れる。 #}
+    <input type="datetime-local" name="date" min="{{ deadline|date:'Y-m-d\TH:i'  }}">
+
     {# DateTimeFieldのフォームは、日時のフォーマットに沿っていないとバリデーションエラーになる。 #}
     {# Flatpickr を使うことで更に使いやすくできる。 https://noauto-nolife.com/post/flatpickr-install/ #}
     <input type="number" name="people" placeholder="予約人数を入力"><span>人</span>

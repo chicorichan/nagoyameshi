@@ -15,6 +15,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 # DjangoMessageFramework
 from django.contrib import messages
 
+from django.utils import timezone
+
 class IndexView(View):
 
     def get(self, request, *args, **kwargs):
@@ -244,6 +246,9 @@ class ReservationView(LoginRequiredMixin, View):
         # TODO:店舗情報も表示させる
         context = {}
         context["restaurant"]   = Restaurant.objects.filter(id=pk).first()
+
+        # 日時の入力フォーム用
+        context["deadline"]     = timezone.now() + timezone.timedelta(days=1)
 
         return render(request,"nagoyameshi/reservation.html", context)
     

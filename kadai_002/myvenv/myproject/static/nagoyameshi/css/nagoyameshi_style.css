@@ -174,14 +174,15 @@ label[for="star_radio_5"]:hover ~ label[for="star_radio_1"] > .false_star{ displ
   width:100%;
   top:0;
   left:0;
+  display: flex; 
+  justify-content: center; 
+ 
 }
 .notify_message{
   color:rgb(43, 42, 42);
   padding:1rem;
   margin:1rem;
   border-radius:0.5rem;
-
-  display:flex;
 
   background:rgb(135, 206, 235,0.7);
 }

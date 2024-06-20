@@ -47,28 +47,30 @@ class Reservation(models.Model):
     date = models.DateTimeField(verbose_name="予約日時")
     user = models.ForeignKey(User, verbose_name="予約者", on_delete=models.CASCADE)
     restaurant = models.ForeignKey(Restaurant, verbose_name="対象飲食店", on_delete=models.CASCADE)
-    people = models.PositiveIntegerField(verbose_name="予約人数",null=True, blank=True)
+    people = models.PositiveIntegerField(verbose_name="予約人数")
 
     # Reservationを保存する時、↓の処理が発動される
     # raise ValidationError() をすることで、保存を阻止できる。引数に書いたエラーメッセージを表示できる。
     def clean(self):
         super().clean()
 
+       #peopleがブランクの時
+        if self.people == None:
+          self.people = 0
+          raise ValidationError("予約人数が不明です")
+
         # 保存しようとしているデータは self 
         if self.people > self.restaurant.capacity:
             raise ValidationError("受け入れ人数を超過しています")
-        
-        #peopleがブランクの時
-        if self.people is None:
-           self.people = 0
-        if self.people <= 0:
-           raise ValidationError("予約人数が不明です")
+               
 
         now = timezone.now()
+
+        deadline  = now + timezone.timedelta(days=1)
         # one_day_ago = timezone.now() - timezone.timedelta(days=1)
         # print(one_day_ago)
         # if self.date < one_day_ago:
-        if self.date < now:
+        if self.date < deadline:
             raise ValidationError("この日程では予約できません")
 
         # 営業時間のチェック
