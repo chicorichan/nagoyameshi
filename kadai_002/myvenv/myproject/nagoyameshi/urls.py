@@ -12,6 +12,11 @@ urlpatterns = [
     path('Fav/<int:pk>/', views.fav, name="fav"),
     path('mypage/', views.mypage, name="mypage"),
     path('reservation/<int:pk>/', views.reservation, name="reservation"),
+    # path("", views.index, name="index"),
+    path("checkout/", views.checkout, name="checkout"),
+    path("success/", views.success, name="success"),
+    path("portal/", views.portal, name="portal"),
+    path('premium/', views.premium, name="premium"),
 ]
 
 #画像のURL設定

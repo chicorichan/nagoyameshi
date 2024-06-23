@@ -71,4 +71,21 @@ console.log("ここにheadタグに追加するCSSやJSを書く");
     <th>最後 &raquo;</th>
     {% endif %}
   </div> 
+
+{# すでに有料会員登録している場合は、プランにアクセスできるようにする。有料会員ではない場合は、そのリンクを表示させる。#}
+{% if request.user.customer %}
+<div>
+<a class="button" href="{% url 'nagoyameshi:portal' %}">有料会員登録の設定をする</a>
+
+
+<a href="{% url 'nagoyameshi:premium' %}">有料会員のサービスを使う</a>
+
+</div>
+{% else %}
+<form action="{% url 'nagoyameshi:checkout' %}" method="post">
+{% csrf_token %}
+<input type="submit" value="有料会員登録する">
+</form>
+{% endif %}
+
 {% endblock %}

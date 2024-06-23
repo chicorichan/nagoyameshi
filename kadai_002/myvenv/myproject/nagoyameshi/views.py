@@ -15,7 +15,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 # DjangoMessageFramework
 from django.contrib import messages
 
+#予約時間のバリデーションのため
 from django.utils import timezone
+
+#Stripe
+import stripe
+from django.conf import settings
+from django.urls import reverse_lazy
 
 class IndexView(View):
 
@@ -309,3 +315,124 @@ class MypageView(View):
 
 # urls.pyから呼び出せるようにする。
 mypage = MypageView.as_view()
+
+#Stripe
+stripe.api_key  = settings.STRIPE_API_KEY
+
+""""
+class IndexView(LoginRequiredMixin,View):
+    def get(self, request, *args, **kwargs):
+        return render(request, "nagoyameshi/index.html")
+
+index   = IndexView.as_view()
+"""
+
+# 1: 決済の要求
+class CheckoutView(LoginRequiredMixin,View):
+    def post(self, request, *args, **kwargs):
+
+        # セッションを作る
+        checkout_session = stripe.checkout.Session.create(
+            line_items=[
+                {
+                    'price': settings.STRIPE_PRICE_ID,
+                    'quantity': 1,
+                },
+            ],
+            payment_method_types=['card'],
+            mode='subscription',
+            success_url=request.build_absolute_uri(reverse_lazy("nagoyameshi:success")) + '?session_id={CHECKOUT_SESSION_ID}',
+            cancel_url=request.build_absolute_uri(reverse_lazy("nagoyameshi:index")),
+        )
+
+        # セッションid
+        print( checkout_session["id"] )
+
+        return redirect(checkout_session.url)
+
+checkout    = CheckoutView.as_view()
+
+
+# 顧客がカード情報を入力して決済を終えた後。本当に決済をしたのか調べる。
+class SuccessView(LoginRequiredMixin,View):
+    def get(self, request, *args, **kwargs):
+
+        # パラメータにセッションIDがあるかチェック
+        if "session_id" not in request.GET:
+            print("セッションIDがありません。")
+            return redirect("nagoyameshi:index")
+
+
+        # そのセッションIDは有効であるかチェック。
+        try:
+            checkout_session_id = request.GET['session_id']
+            checkout_session    = stripe.checkout.Session.retrieve(checkout_session_id)
+        except:
+            print( "このセッションIDは無効です。")
+            return redirect("nagoyameshi:index")
+
+        print(checkout_session)
+
+        # statusをチェックする。未払であれば拒否する。(未払いのsession_idを入れられたときの対策)
+        if checkout_session["payment_status"] != "paid":
+            print("未払い")
+            return redirect("nagoyameshi:index")
+
+        print("支払い済み")
+
+
+        # 有効であれば、セッションIDからカスタマーIDを取得。ユーザーモデルへカスタマーIDを記録する。
+        request.user.customer   = checkout_session["customer"]
+        request.user.save()
+
+        print("有料会員登録しました！")
+
+        return redirect("nagoyameshi:index")
+
+success     = SuccessView.as_view()
+
+
+# サブスクリプションの操作関係
+class PortalView(LoginRequiredMixin,View):
+    def get(self, request, *args, **kwargs):
+
+        if not request.user.customer:
+            print( "有料会員登録されていません")
+            return redirect("nagoyameshi:index")
+
+        # ユーザーモデルに記録しているカスタマーIDを使って、ポータルサイトへリダイレクト
+        portalSession   = stripe.billing_portal.Session.create(
+            customer    = request.user.customer,
+            return_url  = request.build_absolute_uri(reverse_lazy("nagoyameshi:index")),
+        )
+
+        return redirect(portalSession.url)
+
+portal      = PortalView.as_view()
+
+class PremiumView(View):
+    def get(self, request, *args, **kwargs):
+        
+        # カスタマーIDを元にStripeに問い合わせ
+        try:
+            subscriptions = stripe.Subscription.list(customer=request.user.customer)
+        except:
+            print("このカスタマーIDは無効です。")
+            return redirect("nagoyameshi:index")
+        
+        # ステータスがアクティブであるかチェック。
+        for subscription in subscriptions.auto_paging_iter():
+            if subscription.status == "active":
+                print("サブスクリプションは有効です。")
+
+                return render(request, "nagoyameshi/premium.html")
+            else:
+                print("サブスクリプションが無効です。")
+
+        #TODO: 予約・お気に入り登録
+
+
+
+        return redirect("bbs:index")
+
+premium     = PremiumView.as_view()

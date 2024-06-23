@@ -8,9 +8,9 @@
 <!-- お気に入りの登録やレビュー投稿の成功か失敗かのメッセージ表示 -->
 <div class="notify_message_area">
   {% for message in messages %}
-  <div class="notify_message notify_message_{{ message.tags }}" >
-      <div class="notify_message_content">{{ message }}</div>
-      <div class="notify_message_delete"><i class="fas fa-times"></i></div>
+  <div class="notify_message notify_message_{{ message.tags }}" style="font-size: small;" >
+      <div class="notify_message_content" style="font-size: medium;">{{ message }}</div>
+      <div class="notify_message_delete" style="font-size: medium;"><i class="fas fa-times"></i></div>
   </div>
   {% endfor %}
 </div>
