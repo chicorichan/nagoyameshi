@@ -57,11 +57,11 @@ class Reservation(models.Model):
        #peopleがブランクの時
         if self.people == None:
           self.people = 0
-          raise ValidationError("予約人数が不明です")
+          raise ValidationError("予約人数が不明です　")
 
         # 保存しようとしているデータは self 
         if self.people > self.restaurant.capacity:
-            raise ValidationError("受け入れ人数を超過しています")
+            raise ValidationError("受け入れ人数を超過しています　")
                
 
         now = timezone.now()
@@ -71,14 +71,14 @@ class Reservation(models.Model):
         # print(one_day_ago)
         # if self.date < one_day_ago:
         if self.date < deadline:
-            raise ValidationError("この日程では予約できません")
+            raise ValidationError("この日程では予約できません　")
 
         # 営業時間のチェック
         if self.date.time() < self.restaurant.start:
-            raise ValidationError("営業時間前です")
+            raise ValidationError("営業時間前です　")
 
         if self.date.time() > self.restaurant.end:
-            raise ValidationError("営業時間後です")
+            raise ValidationError("営業時間後です　")
 
 #レビューモデル
 class Review(models.Model):

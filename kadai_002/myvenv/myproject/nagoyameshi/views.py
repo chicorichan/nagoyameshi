@@ -194,12 +194,12 @@ class ReviewView(View):
             form.save()
 
             # messages を使って、投稿完了をフロントに表示させる。
-            messages.success(request, "レビュー投稿が完了しました")
+            messages.success(request, "レビュー投稿が完了しました　")
 
         else:
             print("保存失敗")
             print(form.errors)
-            messages.info(request, "レビュー投稿が失敗しました")
+            messages.info(request, "レビュー投稿が失敗しました　")
 
        #投稿した後は、飲食店詳細ページにリダイレクトする。
         return redirect("nagoyameshi:restaurant", pk)
@@ -223,7 +223,7 @@ class FavView(View):
         # お気に入り登録している場合は、削除をする。
         if fav:
             fav.delete()
-            messages.success(request, "お気に入り登録解除しました")
+            messages.success(request, "お気に入り登録解除しました　")
         # 登録していない場合は、作成する。
         else:
             copied["restaurant"] = pk
@@ -233,7 +233,7 @@ class FavView(View):
 
             if form.is_valid():
                 form.save()
-                messages.success(request, "お気に入り登録しました")
+                messages.success(request, "お気に入り登録しました　")
             else:
                 print("保存失敗")
                 print(form.errors)
@@ -278,10 +278,10 @@ class ReservationView(LoginRequiredMixin, View):
 
         if form.is_valid():
             form.save()
-            messages.success(request, "予約が完了しました")
+            messages.success(request, "予約が完了しました　")
         else:
             print(form.errors)
-            messages.info(request, "予約ができませんでした")
+            messages.info(request, "予約ができませんでした　")
             values          = form.errors.get_json_data().values()
 
             for value in values:
@@ -386,6 +386,7 @@ class SuccessView(LoginRequiredMixin,View):
         request.user.save()
 
         print("有料会員登録しました！")
+        messages.success(request, "有料会員登録しました")
 
         return redirect("nagoyameshi:index")
 
