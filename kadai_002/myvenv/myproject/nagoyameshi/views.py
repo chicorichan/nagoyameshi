@@ -172,6 +172,8 @@ class RestaurantView(View):
         else:
             context["is_faved"]     = False
 
+        # 有料会員状態をチェックして、その結果をcontextに入れる
+        context["is_premium"]       = premium_check(request)
 
         return render(request, "nagoyameshi/restaurant.html", context)
     
@@ -180,6 +182,10 @@ restaurant  = RestaurantView.as_view()
 #飲食店のレビューを受け付けるビュー
 class ReviewView(View):
     def post(self, request, pk, *args, **kwargs):
+
+        # 有料会員登録をチェックする
+        if not premium_check(request):
+            return redirect("nagoyameshi:restaurant", pk)
 
         copied = request.POST.copy()
 
@@ -211,6 +217,10 @@ review = ReviewView.as_view()
 # お気に入り登録する店舗、すでに登録されていないか、チェックする。
 class FavView(View):
     def post(self, request, pk, *args, **kwargs):
+
+       # 有料会員登録をチェックする
+        if not premium_check(request):
+            return redirect("nagoyameshi:restaurant", pk)
 
         copied = request.POST.copy()
 
@@ -248,6 +258,10 @@ fav = FavView.as_view()
 class ReservationView(LoginRequiredMixin, View):
 
     def get(self, request, pk, *args, **kwargs):
+
+           # 有料会員登録をチェックする
+        if not premium_check(request):
+            return redirect("nagoyameshi:restaurant", pk)
 
         # TODO:店舗情報も表示させる
         context = {}
@@ -325,10 +339,10 @@ reservation_cancel  = ReservationCancelView.as_view()
 
 # マイページを表示するビュー
 # マイページはログイン済みのユーザーのみ発動
-class MypageView(View):
+class MypageView(LoginRequiredMixin,View):
     def get(salf, request, *args, **kwargs):
 
-        # 予約の一覧、お気に入りの一覧、レビュー一覧がそれぞれ見れるようにする
+        # 予約の一覧、お気に入りの一覧、レビュー一覧をそれぞれ見られるようにする
         context = {}
 
         # 自分が予約した情報を取り出す。
@@ -467,7 +481,7 @@ class PremiumView(LoginRequiredMixin,View):
 
 premium     = PremiumView.as_view()
 
-# 有料会員かどうかをチェックして、ブーリアン値を返す
+# 有料会員かどうかをチェックして、ブーリアン値を返す関数をreview fav reserveition.view内に組み込む
 def premium_check(request):
 
         is_premium = False
