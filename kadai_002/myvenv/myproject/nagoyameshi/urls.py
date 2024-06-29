@@ -12,6 +12,7 @@ urlpatterns = [
     path('Fav/<int:pk>/', views.fav, name="fav"),
     path('mypage/', views.mypage, name="mypage"),
     path('reservation/<int:pk>/', views.reservation, name="reservation"),
+    path('reservation_cancel/<int:pk>/', views.reservation_cancel, name="reservation_cancel"),
     
     path("checkout/", views.checkout, name="checkout"),
     path("success/", views.success, name="success"),

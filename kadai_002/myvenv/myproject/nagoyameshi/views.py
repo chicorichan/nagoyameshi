@@ -292,6 +292,36 @@ class ReservationView(LoginRequiredMixin, View):
 
 reservation = ReservationView.as_view()
 
+class ReservationCancelView(LoginRequiredMixin,View):
+
+    # pk はキャンセルしたい予約(Reservation)のid
+    def post(self, request, pk, *args, **kwargs):
+        #pk を使って予約データを取り出す
+        
+        # Reservationモデルを使ってidがpkのデータを取り出す。
+        Reservation.objects.filter(id=pk)
+
+        # userでも絞り込みをすることで、 予約をしていない人が勝手に予約をキャンセルすることはできない。
+        reservation = Reservation.objects.filter(id=pk, user=request.user).first()
+
+        # datetime型なので、date型に直す deadline.date 
+        deadline = reservation.date - timezone.timedelta(days=1)
+        today = timezone.now()
+
+        if today.date() <= deadline.date():
+            print("キャンセルできる")
+            messages.success(request, "予約を取り消しました　")
+
+            # 予約の削除(キャンセル)
+            reservation.delete()
+        else:
+            messages.error(request, "キャンセル可能期間が過ぎています　")
+
+        return redirect("nagoyameshi:mypage")
+
+
+reservation_cancel  = ReservationCancelView.as_view()
+
 
 # マイページを表示するビュー
 # マイページはログイン済みのユーザーのみ発動
@@ -380,9 +410,8 @@ class SuccessView(LoginRequiredMixin,View):
 
         print("支払い済み")
 
-
         # 有効であれば、セッションIDからカスタマーIDを取得。ユーザーモデルへカスタマーIDを記録する。
-        request.user.customer   = checkout_session["customer"]
+        request.user.paid_member   = checkout_session["customer"]
         request.user.save()
 
         print("有料会員登録しました！")
@@ -397,13 +426,13 @@ success     = SuccessView.as_view()
 class PortalView(LoginRequiredMixin,View):
     def get(self, request, *args, **kwargs):
 
-        if not request.user.customer:
+        if not request.user.paid_member:
             print( "有料会員登録されていません")
             return redirect("nagoyameshi:index")
 
         # ユーザーモデルに記録しているカスタマーIDを使って、ポータルサイトへリダイレクト
         portalSession   = stripe.billing_portal.Session.create(
-            customer    = request.user.customer,
+            customer    = request.user.paid_member,
             return_url  = request.build_absolute_uri(reverse_lazy("nagoyameshi:index")),
         )
 
@@ -411,12 +440,12 @@ class PortalView(LoginRequiredMixin,View):
 
 portal      = PortalView.as_view()
 
-class PremiumView(View):
+class PremiumView(LoginRequiredMixin,View):
     def get(self, request, *args, **kwargs):
         
         # カスタマーIDを元にStripeに問い合わせ
         try:
-            subscriptions = stripe.Subscription.list(customer=request.user.customer)
+            subscriptions = stripe.Subscription.list(customer=request.user.paid_member)
         except:
             print("このカスタマーIDは無効です。")
             return redirect("nagoyameshi:index")
@@ -434,6 +463,27 @@ class PremiumView(View):
 
 
 
-        return redirect("bbs:index")
+        return redirect("nagoyameshi:index")
 
 premium     = PremiumView.as_view()
+
+# 有料会員かどうかをチェックして、ブーリアン値を返す
+def premium_check(request):
+
+        is_premium = False
+
+        # カスタマーIDを元にStripeに問い合わせ
+        try:
+            subscriptions = stripe.Subscription.list(customer=request.user.paid_member)
+        except:
+            print("このカスタマーIDは無効です。")
+            return is_premium
+        
+        # ステータスがアクティブであるかチェック。
+        for subscription in subscriptions.auto_paging_iter():
+            if subscription.status == "active":
+                print("サブスクリプションは有効です。")
+
+                is_premium = True
+        
+        return is_premium

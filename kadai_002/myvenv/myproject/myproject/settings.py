@@ -159,9 +159,6 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 #Stripe
 from .local_settings import *
-    # STRIPE_API_KEY          = "pk_test_51PTsriBBQyvhQABbEywOdSqGEIfdHK2hOACrIA8iTz99KFUPafm4PwpdiiRO5hz6BmZcrHb9sQloqsJfUwwUEEu30046SovnPQ"
-    # STRIPE_PUBLISHABLE_KEY  = "sk_test_51PTsriBBQyvhQABbAodsl5VZKjUCxQmc6odzC65vAIi4b0B8yZuOx1ckHKcgklmh3vXkuI4mb23jeV1RWaTYDkxh00gCjr7K9A"
-    # STRIPE_PRICE_ID         = "prod_QKYFvmFv6GqQQz"
-
+    
 
 
