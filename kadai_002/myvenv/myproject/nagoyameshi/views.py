@@ -356,8 +356,7 @@ class MypageView(LoginRequiredMixin,View):
         context["favs"] = Fav.objects.filter(user=request.user)
         context["reviews"] = Review.objects.filter(user=request.user)
 
-        # 自分が投稿したレビューも取り出せる。
-        
+        # 自分が投稿したレビューも取り出せる。        
         return render(request, "nagoyameshi/mypage.html", context)
 
 # urls.pyから呼び出せるようにする。
@@ -502,7 +501,5 @@ def premium_check(request):
                 print("サブスクリプションは有効です。")
 
                 is_premium = True
-            else:
-                is_premium = False
         
         return is_premium

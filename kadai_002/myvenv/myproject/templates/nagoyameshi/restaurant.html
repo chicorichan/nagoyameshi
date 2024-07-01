@@ -18,20 +18,13 @@
 <div class="container">
 <div class="table-responsive">
   {# すでに有料会員登録している場合は、プランにアクセスできるようにする。有料会員ではない場合は、そのリンクを表示させる。#}
-  {% if request.user.customer %}
-  <div>
-  <a class="button" href="{% url 'nagoyameshi:portal' %}">有料会員登録の設定をする</a>
-  
-  <a href="{% url 'nagoyameshi:premium' %}">有料会員のサービスを使う</a>
-  
-  </div>
-  {% else %}
+  {% if not request.user.paid_member %}
   <form action="{% url 'nagoyameshi:checkout' %}" method="post">
   {% csrf_token %}
-  <input class="btn btn-warning" type="submit" value="有料会員登録する">
+  <input class="btn btn-warning" type="submit" value="有料会員登録をする">
   </form>
-  {% endif %}
   <br>
+  {% endif %}
 <section>
 <h3>・・・店舗詳細</h3>
 <!-- <h4 style="font-weight: bold;">【{{ restaurant.category }}】{{ restaurant.name }}</h4>  -->

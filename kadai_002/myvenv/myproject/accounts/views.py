@@ -59,3 +59,11 @@ password_reset              = PasswordResetView.as_view()
 password_reset_done         = PasswordResetDoneView.as_view()
 password_reset_confirm      = PasswordResetConfirmView.as_view()
 password_reset_complete     = PasswordResetCompleteView.as_view()
+
+
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def profile_view(request):
+    user = request.user.objects.all
+    return render(request, 'mypage.html', {'user': user})

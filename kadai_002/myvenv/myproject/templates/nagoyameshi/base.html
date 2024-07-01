@@ -44,7 +44,7 @@
           <li><a href="{% url 'login' %}">ログイン</a></li>
           <br>
           {% else %}
-          <!-- 以下をログインしたら表示されるようにしたい -->
+          <!-- 以下をログインしたら表示されるようにしたい -->          
           <li><a class="menu_link" href="http://127.0.0.1:8000/mypage/">マイページ</a></li>
           <br>
           <form action="{% url 'logout' %}" method="post" >
