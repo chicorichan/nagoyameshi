@@ -185,7 +185,7 @@ class ReviewView(View):
 
         # 有料会員登録をチェックする
         if not premium_check(request):
-            messages.info(request, "このサービスを利用するには画面左上から有料会員登録を行ってください　")
+            messages.info(request, "このサービスをご利用になるには画面右上から有料会員登録を行ってください　")
             return redirect("nagoyameshi:restaurant", pk)
 
         copied = request.POST.copy()
@@ -221,7 +221,7 @@ class FavView(View):
 
        # 有料会員登録をチェックする
         if not premium_check(request):
-            messages.info(request, "このサービスを利用するには画面左上から有料会員登録を行ってください　")
+            messages.info(request, "このサービスをご利用になるには画面右上から有料会員登録を行ってください　")
             return redirect("nagoyameshi:restaurant", pk)
 
         copied = request.POST.copy()
@@ -263,7 +263,7 @@ class ReservationView(LoginRequiredMixin, View):
 
            # 有料会員登録をチェックする
         if not premium_check(request):
-            messages.info(request, "このサービスを利用するには画面左上から有料会員登録を行ってください　")
+            messages.info(request, "このサービスをご利用になるには画面右上から有料会員登録を行ってください　")
             return redirect("nagoyameshi:restaurant", pk)
 
         # TODO:店舗情報も表示させる

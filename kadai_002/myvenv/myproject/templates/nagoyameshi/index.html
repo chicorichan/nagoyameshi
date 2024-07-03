@@ -23,8 +23,8 @@ console.log("ここにheadタグに追加するCSSやJSを書く");
 
       <input type="text" name="search" value="{{ request.GET.search }}" placeholder="キーワード"> 
       <input type="submit" value="検索" class="btn btn-info">
-      <button class="btn btn-outline-dark">
-        <a style="text-decoration: none; color: rgb(39, 38, 38);" href="http://127.0.0.1:8000/?category_multi=1&category=&search=">リセット</a>
+      <button class="btn btn-outline-secondary">
+        <a  class="hover-style" style="text-decoration: none; color: rgb(77, 75, 75)" href="http://127.0.0.1:8000/?category_multi=1&category=&search=">リセット</a>
       </button>
 
     </form>
@@ -71,20 +71,5 @@ console.log("ここにheadタグに追加するCSSやJSを書く");
     <th>最後 &raquo;</th>
     {% endif %}
   </div> 
-
-{# すでに有料会員登録している場合は、プランにアクセスできるようにする。有料会員ではない場合は、そのリンクを表示させる。#}
-{% if request.user.customer %}
-<div>
-<a class="button" href="{% url 'nagoyameshi:portal' %}">有料会員登録の設定をする</a>
-
-<a href="{% url 'nagoyameshi:premium' %}">有料会員のサービスを使う</a>
-
-</div>
-{% else %}
-<form action="{% url 'nagoyameshi:checkout' %}" method="post">
-{% csrf_token %}
-<input type="submit" value="有料会員登録する">
-</form>
-{% endif %}
 
 {% endblock %}

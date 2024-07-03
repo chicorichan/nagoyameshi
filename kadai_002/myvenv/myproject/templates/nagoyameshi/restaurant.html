@@ -19,7 +19,7 @@
 <div class="table-responsive">
   {# すでに有料会員登録している場合は、プランにアクセスできるようにする。有料会員ではない場合は、そのリンクを表示させる。#}
   {% if not request.user.paid_member %}
-  <form action="{% url 'nagoyameshi:checkout' %}" method="post">
+  <form action="{% url 'nagoyameshi:checkout' %}" method="post" style="text-align: right;">
   {% csrf_token %}
   <input class="btn btn-warning" type="submit" value="有料会員登録をする">
   </form>
@@ -137,8 +137,8 @@
 
 {# contextに与えられたreviewsを使ってレビューを表示 #}
 {% for review in reviews %}
-<div class="border">
-  <div>投稿者：{{ review.users }}さん</div>
+<div class="border-top border-bottom">
+  <div>投稿者：{{ user.username }}さん</div>
   <div>投稿日：{{ review.created_date }}</div>  
     <div class="review_star">
         <span class="review_true_star">{% for s in review.star_icon.true_star %}<i class="fas fa-star"></i>{% endfor %}</span>
