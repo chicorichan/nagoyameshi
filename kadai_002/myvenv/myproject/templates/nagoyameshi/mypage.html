@@ -97,7 +97,7 @@
     <td>{{ fav.restaurant.category }}</td>
     <td>{{ fav.restaurant.name }}</td>
     <td>{{ fav.created_date }}</td>
-    <td><a class="btn btn-info" href="{% url 'nagoyameshi:restaurant' fav.restaurant.id %}">店舗ページへ</a></td>
+    <td><a class="btn btn-info" href="{% url 'nagoyameshi:restaurant' fav.restaurant.id %}">店舗</a></td>
 </tr>
 {% empty %}
 <div>まだお気に入りはありません。</div>
@@ -121,23 +121,33 @@
       <th>評価</th>
       <th>投稿日</th>
       <th>投稿コメント</th>
+      <th>店舗ページ</th>
+      <th>編集・削除</th>
   </tr>
 </thead>
 {% for review in reviews %}
-<tr>
-  <th>{{ review.restaurant.name }}</th>
-  <th>
+<tr style="text-align: center;">
+  <td>{{ review.restaurant.name }}</td>
+  <td>
     <div class="review_star">
     <span class="review_true_star">{% for s in review.star_icon.true_star %}<i class="fas fa-star"></i>{% endfor %}</span>
     <span class="review_false_star">{% for s in review.star_icon.false_star %}<i class="far fa-star"></i>{% endfor %}</span>
   </div>
-  </th>
-  <th>{{ review.created_date }}</th>
-  <th>{{ review.comment }}</th>
+  </td>
+  <td>{{ review.created_date }}</td>
+  <td style="text-align: left;">{{ review.comment }}</td>
+  <td><a class="btn btn-info" href="{% url 'nagoyameshi:restaurant' review.restaurant.id %}">店舗</a></td>
+  {# 自分が投稿したものに限り、編集のリンクを表示させる。 #}
+  <td>
+  {% if request.user == review.user %}
+  <a class="btn btn-success" href="{% url 'nagoyameshi:review_edit' review.id  %}">編集</a>
+  {% endif %}
+  </td>
 </tr>
 {% empty %}
 <div>まだレビューはありません。</div>
 <tr style="text-align: center;">
+  <td>-</td>
   <td>-</td>
   <td>-</td>
   <td>-</td>

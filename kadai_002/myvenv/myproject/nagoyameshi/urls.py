@@ -9,6 +9,9 @@ urlpatterns = [
     path('', views.index, name="index"),
     path('restaurant/<int:pk>/', views.restaurant, name="restaurant"),
     path('review/<int:pk>/', views.review, name="review"),
+    path('review_edit/<int:pk>/', views.review_edit, name="review_edit"),
+    path('review_delete/<int:pk>/', views.review_delete, name="review_delete"),
+
     path('Fav/<int:pk>/', views.fav, name="fav"),
     path('mypage/', views.mypage, name="mypage"),
     path('reservation/<int:pk>/', views.reservation, name="reservation"),

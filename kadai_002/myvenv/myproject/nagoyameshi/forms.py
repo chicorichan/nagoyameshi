@@ -23,6 +23,13 @@ class ReviewForm(forms.ModelForm):
         model   = Review
         fields  = ["user","restaurant","comment","stars"]
 
+# Review編集用のフォーム
+class ReviewEditForm(forms.ModelForm):
+
+    class Meta:
+        model   = Review
+        fields  = ["comment","stars"]
+
 # Fav のバリデーション用のフォームを作る
 class FavForm(forms.ModelForm):
     

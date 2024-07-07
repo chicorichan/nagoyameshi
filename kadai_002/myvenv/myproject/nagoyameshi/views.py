@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from django.views import View
 from .models import Restaurant,Category,Review,Fav,Reservation
 
-from .forms import RestaurantCategorySearchForm,ReviewForm,FavForm, ReservationForm
+from .forms import RestaurantCategorySearchForm,ReviewForm,FavForm, ReservationForm, ReviewEditForm
+
 
 
 # ページネーション
@@ -212,6 +213,66 @@ class ReviewView(View):
         return redirect("nagoyameshi:restaurant", pk)
 
 review = ReviewView.as_view()
+
+
+# レビュー編集をするビュー
+# pkはReviewのid
+class ReviewEditView(LoginRequiredMixin,View):
+    def get(self, request, pk, *args, **kwargs):
+        # 編集したいレビューを表示
+        # 自分が投稿したレビューではない場合は店舗検索画面へリダイレクト
+
+        review = Review.objects.filter(id=pk, user=request.user).first()
+
+        if not review:
+            print("このレビューは存在しないか、自身で投稿したものではありません。")
+            return redirect("nagoyameshi:index")
+        context = {}
+        context["review"]   = review
+        return render(request, "nagoyameshi/review_edit.html", context)
+        
+    def post(self, request, pk, *args, **kwargs):
+
+        # TODO: ここで編集処理を受け付ける。
+        review = Review.objects.filter(id=pk, user=request.user).first()        
+        if not review:
+            print("このレビューは存在しないか、自分で投稿したものではありません。")
+            return redirect("nagoyameshi:index")
+        # request.POSTの中に、 stars と comment が入っている。
+        # stars と commentをバリデーションする。
+
+        # フォームクラス(データ) この場合、新規作成される。
+        # フォームクラス(データ, instance=編集したいオブジェクト)
+        form = ReviewEditForm(request.POST, instance=review)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, "レビュー編集が完了しました　")
+        else:
+            print("編集失敗")
+            print(form.errors)
+            messages.info(request, "レビュー編集が失敗しました　")
+
+        return redirect("nagoyameshi:mypage")
+
+review_edit = ReviewEditView.as_view()
+
+#review削除をするビュー
+class ReviewDeleteView(LoginRequiredMixin,View):
+    def post(self, request, pk, *args, **kwargs):
+
+        review = Review.objects.filter(id=pk, user=request.user).first()        
+
+        if not review:
+            print("このレビューは存在しないか、自分で投稿したものではありません。")
+            return redirect("nagoyameshi:index")
+        # 削除する。
+        review.delete()
+        messages.info(request, "投稿レビューを削除しました　")
+
+        return redirect("nagoyameshi:mypage")
+
+review_delete = ReviewDeleteView.as_view()
 
 
 #飲食店のお気に入りを受けつけるビュー
@@ -486,14 +547,28 @@ premium     = PremiumView.as_view()
 # 有料会員かどうかをチェックして、ブーリアン値を返す関数をreview fav reserveition.view内に組み込む
 def premium_check(request):
 
+        # 有料会員登録をしていない場合は、 None 
+        print(request.user.paid_member)
+
         is_premium = False
+
+        # "" と None 両方が無料会員として扱われる。
+        if not request.user.paid_member:
+            print("まだ有料会員登録をしていません。")
+            return is_premium
 
         # カスタマーIDを元にStripeに問い合わせ
         try:
             subscriptions = stripe.Subscription.list(customer=request.user.paid_member)
         except:
             print("このカスタマーIDは無効です。")
+            request.user.paid_member = ""
+            request.user.save()
+
             return is_premium
+        
+        # Noneの状態で↑の処理を実行すると、次のif文でサブスクリプションは有効と判断される。
+        print(subscriptions)
         
         # ステータスがアクティブであるかチェック。
         for subscription in subscriptions.auto_paging_iter():
@@ -501,5 +576,9 @@ def premium_check(request):
                 print("サブスクリプションは有効です。")
 
                 is_premium = True
-        
+
+        if not is_premium:
+            request.user.paid_member = ""
+            request.user.save()
+
         return is_premium

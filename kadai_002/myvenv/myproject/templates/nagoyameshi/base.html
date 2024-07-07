@@ -34,12 +34,11 @@
           <br>
           <br>
         <ul>
+          {% if request.user.is_authenticated %}
           <li><a class="menu_link" href="http://127.0.0.1:8000/?category_multi=1&category=&search=">店舗検索</a></li>
           <br>
-          <li>閲覧履歴</li>
-          <br>
-          <li>問い合わせ</li>
-          <br>
+          {% endif %}
+          
           {% if not request.user.is_authenticated %}
           <li><a href="{% url 'login' %}">ログイン</a></li>
           <br>

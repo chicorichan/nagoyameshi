@@ -1,0 +1,51 @@
+{% extends "nagoyameshi/base.html" %}
+
+{% block extra_head %}
+{% endblock %}
+
+{% block main %}
+
+<h3>レビュー編集</h3>
+<label><i class="fas fa-check"></i>レビューの編集が完了したら送信ボタンを押してください。</label><br>
+<label><i class="fas fa-check"></i>レビューを編集削除する場合は削除ボタンを押してください。</label><br>
+<h4>店舗名：{{ review.restaurant.name }}</h4>
+<table>
+  <tr>
+      <form action="" method="post">
+      {# レビューの星の数選択 #}
+      <input id="star_radio_1" type="radio" name="stars" value="1" {% if review.stars == 1 %}checked{% endif %}>
+      <input id="star_radio_2" type="radio" name="stars" value="2" {% if review.stars == 2 %}checked{% endif %}>
+      <input id="star_radio_3" type="radio" name="stars" value="3" {% if review.stars == 3 %}checked{% endif %}>
+      <input id="star_radio_4" type="radio" name="stars" value="4" {% if review.stars == 4 %}checked{% endif %}>
+      <input id="star_radio_5" type="radio" name="stars" value="5" {% if review.stars == 5 %}checked{% endif %}>
+  
+      <div class="star_radio_label_area">
+        <div class="star_radio_label_flex">
+            <label class="star_radio_label" for="star_radio_5"><div class="true_star" ><i class="fas fa-star"></i></div><div class="false_star"><i class="far fa-star"></i></div></label>
+            <label class="star_radio_label" for="star_radio_4"><div class="true_star" ><i class="fas fa-star"></i></div><div class="false_star"><i class="far fa-star"></i></div></label>
+            <label class="star_radio_label" for="star_radio_3"><div class="true_star" ><i class="fas fa-star"></i></div><div class="false_star"><i class="far fa-star"></i></div></label>
+            <label class="star_radio_label" for="star_radio_2"><div class="true_star" ><i class="fas fa-star"></i></div><div class="false_star"><i class="far fa-star"></i></div></label>
+            <label class="star_radio_label" for="star_radio_1"><div class="true_star" ><i class="fas fa-star"></i></div><div class="false_star"><i class="far fa-star"></i></div></label>
+        </div>
+      </div>
+    <div>
+      {% csrf_token %}
+      <p><input style="width: 600px; height: 300px;" type="text" name="comment" value="{{ review.comment }}"></p>
+    </div>
+<td>
+    <div>
+      <input type="submit" value="送信" class="btn btn-info">&nbsp;&nbsp;&nbsp;&nbsp;
+    </div>
+</form>
+</td>
+<td>
+{# 削除のボタンを作る #}
+{# ReviewDeleteView の postメソッドに送信したい。actionにReviewDeleteViewのURLを指定する。action未指定だと、ReviewEditViewのpostメソッドに行き着く。 #}
+<form action="{% url 'nagoyameshi:review_delete' review.id %}" method="post" onsubmit="if(confirm('本当に削除しますか？')){ return true } else { return false };">
+    {% csrf_token %}
+    <input type="submit" value="削除"  class="btn btn-secondary">
+</form>
+</td>
+</tr>
+</table>
+{% endblock %}
