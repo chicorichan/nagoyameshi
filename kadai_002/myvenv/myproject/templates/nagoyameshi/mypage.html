@@ -135,7 +135,7 @@
   </div>
   </td>
   <td>{{ review.created_date }}</td>
-  <td style="text-align: left;">{{ review.comment }}</td>
+  <td style="text-align: left;">{{ review.comment|linebreaksbr }}</td>
   <td><a class="btn btn-info" href="{% url 'nagoyameshi:restaurant' review.restaurant.id %}">店舗</a></td>
   {# 自分が投稿したものに限り、編集のリンクを表示させる。 #}
   <td>

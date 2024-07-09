@@ -30,7 +30,7 @@
       </div>
     <div>
       {% csrf_token %}
-      <p><input style="width: 600px; height: 300px;" type="text" name="comment" value="{{ review.comment }}"></p>
+      <textarea name="comment" cols="30" rows="10">{{ review.comment }}</textarea>
     </div>
 <td>
     <div>

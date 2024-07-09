@@ -118,15 +118,9 @@
   </div>
   <div>
     {% csrf_token %}
-    <p><input type="text" name="comment"></p>
+    <textarea name="comment" cols="30" rows="10"></textarea>
   </div>
   <div>
-    {% comment %}
-    <!-- reutaurant.idはpkで取得して固定値に -->
-    <input type="text" name="restaurant_id" value="{{ restaurant.id }}" rendonly>
-    <input type="text" name="restaurant" value="{{ restaurant.id }}">
-    <!-- <input type="text" name="user" value="{{ request.user.id }}"> -->
-    {% endcomment %}
 
     <input type="submit" value="送信">
   </div>
@@ -144,7 +138,7 @@
         <span class="review_true_star">{% for s in review.star_icon.true_star %}<i class="fas fa-star"></i>{% endfor %}</span>
         <span class="review_false_star">{% for s in review.star_icon.false_star %}<i class="far fa-star"></i>{% endfor %}</span>
     </div>
-    <div>{{ review.comment }}</div>
+    <div>{{ review.comment|linebreaksbr }}</div>
     {% empty %}
     <div>まだレビューはありません。</div>
     {% endfor %}
